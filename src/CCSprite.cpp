@@ -63,11 +63,3 @@ NodeDataAPI::UniqueNodeData<CCSprite*> NodeDataAPI::getUniqueNodeData<CCSprite*>
     ret.m_flipY = node->isFlipY();
     return ret;
 }
-
-template <>
-CCSprite* NodeDataAPI::cloneNode(CCSprite* node, bool considerChildren) {
-    return NodeDataAPI::createNodeWithData<CCSprite*>(
-        NodeDataAPI::getNodeData<CCSprite*>(node, considerChildren), 
-        considerChildren
-    );
-}
