@@ -109,7 +109,7 @@ namespace NodeDataAPI {
 
 
     template <class NodeSubclass>
-    inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true);
+    NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true);
 
     // base - end
     // CCNode - start
