@@ -42,7 +42,7 @@ NodeSubclass NodeDataAPI::createNodeWithData(NodeData<NodeSubclass> data, bool c
     
 
     if (auto axisLayoutOptionsData = typeinfo_cast<AxisLayoutOptionsData*>(data.m_layoutOptions)) {
-        ret->setLayoutOptions(AxisLayoutOptions::create()-
+        ret->setLayoutOptions(AxisLayoutOptions::create()
             ->setAutoScale(axisLayoutOptionsData->m_autoScale)
             ->setScaleLimits(
                 axisLayoutOptionsData->m_scaleLimits.first, 
@@ -117,7 +117,7 @@ NodeDataAPI::NodeData<NodeSubclass> NodeDataAPI::getNodeData(NodeSubclass node, 
         ret.m_layout->m_growCrossAxis = axisLayout->getGrowCrossAxis();
         ret.m_layout->m_crossAxisOverflow = axisLayout->getCrossAxisOverflow();
         ret.m_layout->m_allowAndMinLength = axisLayout->getAutoGrowAxis();
-        ret.m_layout->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()}
+        ret.m_layout->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()};
     } 
     else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(node->getLayout())) {
         ret.m_layout = new AnchorLayoutData();
