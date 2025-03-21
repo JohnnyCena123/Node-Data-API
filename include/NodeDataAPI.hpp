@@ -189,7 +189,7 @@ namespace NodeDataAPI {
         ret.m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
 
         if (considerChildren) {
-            for (NodeSubclass* child : CCArrayExt<CCNode*>(node->getChildren())) {  
+            for (NodeSubclass child : CCArrayExt<NodeSubclass>(node->getChildren())) {  
                 ret.children.push_back(getNodeData(child)); 
             }
         }
