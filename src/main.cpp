@@ -4,6 +4,7 @@
 
 using namespace geode::prelude;
 
+#include <Geode/modify/MenuLayer>
 class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
