@@ -8,7 +8,7 @@ using namespace geode::prelude;
 class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
-        this->addChild(NodeDataAPI::cloneNode<CCSprite*>(static_cast<CCSprite*>(this->getChildByID("main-title"))));
+        this->addChild(NodeDataAPI::cloneNode(static_cast<CCSprite*>(this->getChildByID("main-title"))));
         return true;
     }
 };

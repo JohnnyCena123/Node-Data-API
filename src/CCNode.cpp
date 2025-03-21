@@ -13,3 +13,11 @@ template <>
 NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::getUniqueNodeData<CCNode*>(CCNode* node) {
     return {/* :3 */};
 }
+
+template <>
+CCNode* NodeDataAPI::cloneNode(CCNode* node, bool considerChildren) {
+    return NodeDataAPI::createNodeWithData<CCNode*>(
+        NodeDataAPI::getNodeData<CCNode*>(node, considerChildren), 
+        considerChildren
+    );
+}

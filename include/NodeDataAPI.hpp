@@ -123,6 +123,9 @@ namespace NodeDataAPI {
     template <>
     UniqueNodeData<CCNode*> getUniqueNodeData<CCNode*>(CCNode* node);
 
+    template <>
+    CCNode* cloneNode<CCNode*>(CCNode* node, bool considerChildren = true);
+
     // CCNode - end
     // CCSprite - start
 
@@ -143,6 +146,9 @@ namespace NodeDataAPI {
 
     template <>
     UniqueNodeData<CCSprite*> getUniqueNodeData<CCSprite*>(CCSprite* node);
+
+    template <>
+    CCSprite* cloneNode<CCSprite*>(CCSprite* node, bool considerChildren = true);
 
     // CCSprite - end
     
