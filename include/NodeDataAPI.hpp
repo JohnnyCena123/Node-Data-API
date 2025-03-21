@@ -189,25 +189,26 @@ namespace NodeDataAPI {
         ret.m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
 
         if (considerChildren) {
-            for (NodeSubclass* child : node->getChildren()) {  
+            for (NodeSubclass* child : CCArrayExt<CCNode*>(node->getChildren())) {  
                 ret.children.push_back(getNodeData(child)); 
             }
         }
 
         if (auto axisLayout = typeinfo_cast<AxisLayout*>(node->getLayout())) {
             ret.m_layout = new AxisLayoutData();
-            ret.m_layout->m_axis = axisLayout->getAxis();
-            ret.m_layout->m_axisAlignment = axisLayout->getAxisAlignment();
-            ret.m_layout->m_crossAxisAlignment = axisLayout->getCrossAxisAlignment();
-            ret.m_layout->m_crossAxisLineAlignment = axisLayout->getCrossAxisLineAlignment();
-            ret.m_layout->m_gap = axisLayout->getGap();
-            ret.m_layout->m_axisReverse = axisLayout->getAxisReverse();
-            ret.m_layout->m_crossAxisReverse = axisLayout->getCrossAxisReverse();
-            ret.m_layout->m_autoScale = axisLayout->getAutoScale();
-            ret.m_layout->m_growCrossAxis = axisLayout->getGrowCrossAxis();
-            ret.m_layout->m_crossAxisOverflow = axisLayout->getCrossAxisOverflow();
-            ret.m_layout->m_allowAndMinLength = axisLayout->getAutoGrowAxis();
-            ret.m_layout->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()};
+            auto axisLayoutData = static_cast<AxisLayoutData*>(ret.m_layout);
+            axisLayoutData->m_axis = axisLayout->getAxis();
+            axisLayoutData->m_axisAlignment = axisLayout->getAxisAlignment();
+            axisLayoutData->m_crossAxisAlignment = axisLayout->getCrossAxisAlignment();
+            axisLayoutData->m_crossAxisLineAlignment = axisLayout->getCrossAxisLineAlignment();
+            axisLayoutData->m_gap = axisLayout->getGap();
+            axisLayoutData->m_axisReverse = axisLayout->getAxisReverse();
+            axisLayoutData->m_crossAxisReverse = axisLayout->getCrossAxisReverse();
+            axisLayoutData->m_autoScale = axisLayout->getAutoScale();
+            axisLayoutData->m_growCrossAxis = axisLayout->getGrowCrossAxis();
+            axisLayoutData->m_crossAxisOverflow = axisLayout->getCrossAxisOverflow();
+            axisLayoutData->m_allowAndMinLength = axisLayout->getAutoGrowAxis();
+            axisLayoutData->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()};
         } 
         else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(node->getLayout())) {
             ret.m_layout = new AnchorLayoutData();
@@ -217,22 +218,24 @@ namespace NodeDataAPI {
 
 
         if (auto axisLayoutOptions = typeinfo_cast<AxisLayoutOptions>(node->getLayoutOptions())) {
-            ret.m_layout = new AxisLayoutOptionsData();
-            ret.m_layout->m_autoScale = axisLayoutOptions->getAutoScale();
-            ret.m_layout->m_scaleLimits = std::make_pair(axisLayoutOptions->getMinScale(), axisLayoutOptions->getMaxScale());
-            ret.m_layout->m_relativeScale = axisLayoutOptions->getRelativeScale();
-            ret.m_layout->m_length = axisLayoutOptions->getLength();
-            ret.m_layout->m_prevGap = axisLayoutOptions->getPrevGap();
-            ret.m_layout->m_nextGap = axisLayoutOptions->getNextGap();
-            ret.m_layout->m_breakLine = axisLayoutOptions->getBreakLine();
-            ret.m_layout->m_sameLine = axisLayoutOptions->getSameLine();
-            ret.m_layout->m_scalePriority = axisLayoutOptions->getScalePriority();
-            ret.m_layout->m_crossAxisAlignment = axisLayoutOptions->getCrossAxisAlignment();
+            ret.m_layoutOptions = new AxisLayoutOptionsData();
+            auto axisLayoutOptionsData = static_cast<AxisLayoutOptionsData*>(ret.m_layout);
+            axisLayoutOptionsData->m_autoScale = axisLayoutOptions->getAutoScale();
+            axisLayoutOptionsData->m_scaleLimits = std::make_pair(axisLayoutOptions->getMinScale(), axisLayoutOptions->getMaxScale());
+            axisLayoutOptionsData->m_relativeScale = axisLayoutOptions->getRelativeScale();
+            axisLayoutOptionsData->m_length = axisLayoutOptions->getLength();
+            axisLayoutOptionsData->m_prevGap = axisLayoutOptions->getPrevGap();
+            axisLayoutOptionsData->m_nextGap = axisLayoutOptions->getNextGap();
+            axisLayoutOptionsData->m_breakLine = axisLayoutOptions->getBreakLine();
+            axisLayoutOptionsData->m_sameLine = axisLayoutOptions->getSameLine();
+            axisLayoutOptionsData->m_scalePriority = axisLayoutOptions->getScalePriority();
+            axisLayoutOptionsData->m_crossAxisAlignment = axisLayoutOptions->getCrossAxisAlignment();
         } 
         else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions>(node->getLayoutOptions())) {
             ret.m_layoutOptions = new AnchorLayoutOptionsData();
-            ret.m_layoutOptions->m_anchor = anchorLayoutOptions->getAnchor();
-            ret.m_layoutOptions->m_offset = {anchorLayoutOptions->getOffset().x, anchorLayoutOptions->getOffset().y};
+            auto anchorLayoutOptionsData = static_cast<AnchorLayoutOptionsData*>(ret.m_layout);
+            anchorLayoutOptionsData->m_anchor = anchorLayoutOptions->getAnchor();
+            anchorLayoutOptionsData->m_offset = {anchorLayoutOptions->getOffset().x, anchorLayoutOptions->getOffset().y};
         }
     
 
