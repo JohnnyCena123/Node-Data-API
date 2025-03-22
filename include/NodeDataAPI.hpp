@@ -14,6 +14,8 @@ namespace NodeDataAPI {
 
     struct LayoutData {
         bool m_isIgnoreInvisibleChildren;
+
+        virtual ~LayoutData() {log::debug("destructed LayoutData!");}
     };
 
     struct AxisLayoutData : public LayoutData {
@@ -33,12 +35,18 @@ namespace NodeDataAPI {
         std::optional<float> m_allowAndMinLength = std::nullopt;
 
         FloatPair m_defaultScaleLimits;
+
+        ~AxisLayoutData() override {log::debug("destructed AxisLayoutData!");}
     };
 
-    struct AnchorLayoutData : public LayoutData {};
+    struct AnchorLayoutData : public LayoutData {
+        ~AnchorLayoutData() override {log::debug("destructed AnchorLayoutData!");}
+    };
 
     
-    struct LayoutOptionsData {};
+    struct LayoutOptionsData {
+        virtual ~LayoutOptionsData() {log::debug("destructed LayoutOptionsData!");}
+    };
 
     struct AxisLayoutOptionsData : public LayoutOptionsData {
         std::optional<bool> m_autoScale = std::nullopt;
@@ -55,11 +63,16 @@ namespace NodeDataAPI {
         int m_scalePriority = AXISLAYOUT_DEFAULT_PRIORITY;
 
         std::optional<AxisAlignment> m_crossAxisAlignment;
+
+        ~AxisLayoutOptionsData() override {log::debug("destructed AxisLayoutOptionsData!");}
     };
+    
 
     struct AnchorLayoutOptionsData : public LayoutOptionsData {
         Anchor m_anchor;
         FloatPair m_offset;
+    
+        ~AnchorLayoutOptionsData() override {log::debug("destructed AnchorLayoutOptionsData!");}
     };
     
 
@@ -194,7 +207,7 @@ namespace NodeDataAPI {
             }
         }
 
-        if (auto axisLayout = dynamic_cast<AxisLayout*>(node->getLayout())) {
+        if (auto axisLayout = typeinfo_cast<AxisLayout*>(node->getLayout())) {
             ret.m_layout = new AxisLayoutData();
             auto axisLayoutData = static_cast<AxisLayoutData*>(ret.m_layout);
             axisLayoutData->m_axis = axisLayout->getAxis();
@@ -210,14 +223,14 @@ namespace NodeDataAPI {
             axisLayoutData->m_allowAndMinLength = axisLayout->getAutoGrowAxis();
             axisLayoutData->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()};
         } 
-        else if (auto anchorLayout = dynamic_cast<AnchorLayout*>(node->getLayout())) {
+        else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(node->getLayout())) {
             ret.m_layout = new AnchorLayoutData();
         }
 
         if (auto layout = node->getLayout()) ret.m_layout->m_isIgnoreInvisibleChildren = layout->isIgnoreInvisibleChildren();
 
 
-        if (auto axisLayoutOptions = dynamic_cast<AxisLayoutOptions*>(node->getLayoutOptions())) {
+        if (auto axisLayoutOptions = typeinfo_cast<AxisLayoutOptions*>(node->getLayoutOptions())) {
             ret.m_layoutOptions = new AxisLayoutOptionsData();
             auto axisLayoutOptionsData = static_cast<AxisLayoutOptionsData*>(ret.m_layoutOptions);
             axisLayoutOptionsData->m_autoScale = axisLayoutOptions->getAutoScale();
@@ -231,7 +244,7 @@ namespace NodeDataAPI {
             axisLayoutOptionsData->m_scalePriority = axisLayoutOptions->getScalePriority();
             axisLayoutOptionsData->m_crossAxisAlignment = axisLayoutOptions->getCrossAxisAlignment();
         } 
-        else if (auto anchorLayoutOptions = dynamic_cast<AnchorLayoutOptions*>(node->getLayoutOptions())) {
+        else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(node->getLayoutOptions())) {
             ret.m_layoutOptions = new AnchorLayoutOptionsData();
             auto anchorLayoutOptionsData = static_cast<AnchorLayoutOptionsData*>(ret.m_layoutOptions);
             anchorLayoutOptionsData->m_anchor = anchorLayoutOptions->getAnchor();

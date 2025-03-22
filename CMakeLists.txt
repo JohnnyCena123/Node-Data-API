@@ -8,6 +8,7 @@ project(Nodedataapi VERSION 1.0.0)
 
 # Set up the mod binary
 add_library(${PROJECT_NAME} SHARED
+    include/NodeDataAPI.hpp
     src/main.cpp
     src/base.cpp
     src/CCNode.cpp
