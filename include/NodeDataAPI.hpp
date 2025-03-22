@@ -190,7 +190,7 @@ namespace NodeDataAPI {
 
         if (considerChildren) {
             for (NodeSubclass child : CCArrayExt<NodeSubclass>(node->getChildren())) {  
-                ret.children.push_back(getNodeData(child)); 
+                ret.m_children.push_back(getNodeData(child)); 
             }
         }
 
@@ -217,7 +217,7 @@ namespace NodeDataAPI {
         if (auto layout = node->getLayout()) ret.m_layout->m_isIgnoreInvisibleChildren = layout->isIgnoreInvisibleChildren();
 
 
-        if (auto axisLayoutOptions = typeinfo_cast<AxisLayoutOptions>(node->getLayoutOptions())) {
+        if (auto axisLayoutOptions = typeinfo_cast<AxisLayoutOptions*>(node->getLayoutOptions())) {
             ret.m_layoutOptions = new AxisLayoutOptionsData();
             auto axisLayoutOptionsData = static_cast<AxisLayoutOptionsData*>(ret.m_layout);
             axisLayoutOptionsData->m_autoScale = axisLayoutOptions->getAutoScale();
@@ -231,7 +231,7 @@ namespace NodeDataAPI {
             axisLayoutOptionsData->m_scalePriority = axisLayoutOptions->getScalePriority();
             axisLayoutOptionsData->m_crossAxisAlignment = axisLayoutOptions->getCrossAxisAlignment();
         } 
-        else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions>(node->getLayoutOptions())) {
+        else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(node->getLayoutOptions())) {
             ret.m_layoutOptions = new AnchorLayoutOptionsData();
             auto anchorLayoutOptionsData = static_cast<AnchorLayoutOptionsData*>(ret.m_layout);
             anchorLayoutOptionsData->m_anchor = anchorLayoutOptions->getAnchor();
