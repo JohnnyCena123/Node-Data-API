@@ -109,7 +109,7 @@ namespace NodeDataAPI {
             }
         }
 
-        if (auto axisLayoutData = typeinfo_cast<AxisLayoutData*>(data.m_layout)) {
+        if (auto axisLayoutData = dynamic_cast<AxisLayoutData*>(data.m_layout)) {
             ret->setLayout(AxisLayout::create(axisLayoutData->m_axis)
                 ->setAxisAlignment(axisLayoutData->m_axisAlignment)
                 ->setCrossAxisAlignment(axisLayoutData->m_crossAxisAlignment)
@@ -124,14 +124,14 @@ namespace NodeDataAPI {
                 ->setDefaultScaleLimits(axisLayoutData->m_defaultScaleLimits.x, axisLayoutData->m_defaultScaleLimits.y)
             );
         } 
-        else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data.m_layout)) {
+        else if (auto anchorLayoutData = dynamic_cast<AnchorLayoutData*>(data.m_layout)) {
             ret->setLayout(AnchorLayout::create());
         }
 
         if (data.m_layout) ret->getLayout()->ignoreInvisibleChildren(data.m_layout->m_isIgnoreInvisibleChildren);
     
 
-        if (auto axisLayoutOptionsData = typeinfo_cast<AxisLayoutOptionsData*>(data.m_layoutOptions)) {
+        if (auto axisLayoutOptionsData = dynamic_cast<AxisLayoutOptionsData*>(data.m_layoutOptions)) {
             ret->setLayoutOptions(AxisLayoutOptions::create()
                 ->setAutoScale(axisLayoutOptionsData->m_autoScale)
                 ->setScaleLimits(
@@ -148,7 +148,7 @@ namespace NodeDataAPI {
                 ->setCrossAxisAlignment(axisLayoutOptionsData->m_crossAxisAlignment)
             );
         } 
-        else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data.m_layoutOptions)) {
+        else if (auto anchorLayoutOptionsData = dynamic_cast<AnchorLayoutOptionsData*>(data.m_layoutOptions)) {
                 ret->setLayoutOptions(AnchorLayoutOptions::create()
                 ->setAnchor(anchorLayoutOptionsData->m_anchor)
                 ->setOffset({anchorLayoutOptionsData->m_offset.x, anchorLayoutOptionsData->m_offset.y})
@@ -261,7 +261,7 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
-        return createNodeWithData<NodeSubclass>(
+    return createNodeWithData<NodeSubclass>(
             getNodeData<NodeSubclass>(node, considerChildren), 
             considerChildren
         );
