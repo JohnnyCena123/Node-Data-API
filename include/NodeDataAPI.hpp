@@ -261,11 +261,11 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
-    return createNodeWithData<NodeSubclass>(
-        getNodeData<NodeSubclass>(node, considerChildren), 
-        considerChildren
-    );
-}
+        return createNodeWithData<NodeSubclass>(
+            getNodeData<NodeSubclass>(node, considerChildren), 
+            considerChildren
+        );
+    }
 
     // CCNode 
 
