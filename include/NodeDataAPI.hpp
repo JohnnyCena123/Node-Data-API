@@ -86,8 +86,8 @@ namespace NodeDataAPI {
 
         std::vector<NodeData> m_children;
 
-        LayoutData* m_layout;
-        LayoutOptionsData* m_layoutOptions;
+        LayoutData* m_layout = nullptr;
+        LayoutOptionsData* m_layoutOptions = nullptr;
 
         FloatPair m_position;
         FloatPair m_anchorPoint = {.5f, .5f};
