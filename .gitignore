@@ -43,6 +43,8 @@
 **/build
 # Ignore platform specific build folders
 build-*/
+# Ignore build zip folder
+*.zip
 
 # Workspace files are user-specific
 *.sublime-workspace
@@ -62,5 +64,3 @@ build-*/
 # CLion
 .idea/
 /cmake-build-*/
-
-# 
