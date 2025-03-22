@@ -158,7 +158,7 @@ namespace NodeDataAPI {
 
         ret->setPosition({data.m_position.x, data.m_position.y});
         ret->setAnchorPoint({data.m_anchorPoint.x, data.m_anchorPoint.y});
-        ret->setScale(data.m_scale.x, data.m_scale.y);
+        ret->setScaleX(data.m_scale.x); ret->setScaleY(data.m_scale.y);
         ret->setContentSize({data.m_contentSize.x, data.m_contentSize.y});
         ret->setRotationX(data.m_rotation.x); ret->setRotationY(data.m_rotation.y);
         ret->setSkewX(data.m_skew.x); ret->setSkewY(data.m_skew.y);
@@ -219,7 +219,7 @@ namespace NodeDataAPI {
 
         if (auto axisLayoutOptions = typeinfo_cast<AxisLayoutOptions*>(node->getLayoutOptions())) {
             ret.m_layoutOptions = new AxisLayoutOptionsData();
-            auto axisLayoutOptionsData = static_cast<AxisLayoutOptionsData*>(ret.m_layout);
+            auto axisLayoutOptionsData = static_cast<AxisLayoutOptionsData*>(ret.m_layoutOptions);
             axisLayoutOptionsData->m_autoScale = axisLayoutOptions->getAutoScale();
             axisLayoutOptionsData->m_scaleLimits = std::make_pair(axisLayoutOptions->getMinScale(), axisLayoutOptions->getMaxScale());
             axisLayoutOptionsData->m_relativeScale = axisLayoutOptions->getRelativeScale();
@@ -233,7 +233,7 @@ namespace NodeDataAPI {
         } 
         else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(node->getLayoutOptions())) {
             ret.m_layoutOptions = new AnchorLayoutOptionsData();
-            auto anchorLayoutOptionsData = static_cast<AnchorLayoutOptionsData*>(ret.m_layout);
+            auto anchorLayoutOptionsData = static_cast<AnchorLayoutOptionsData*>(ret.m_layoutOptions);
             anchorLayoutOptionsData->m_anchor = anchorLayoutOptions->getAnchor();
             anchorLayoutOptionsData->m_offset = {anchorLayoutOptions->getOffset().x, anchorLayoutOptions->getOffset().y};
         }
