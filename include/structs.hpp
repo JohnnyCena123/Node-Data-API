@@ -105,27 +105,47 @@ namespace NodeDataAPI {
 
         std::string m_stringID;
         std::string m_uniqueStringID;
-
-        virtual ~NodeData() {log::debug("destructed NodeData!");}
     };
 
     
     // CCNode 
 
     template <>
-    struct NodeData<CCNode*> : public NodeData {
-       virtual ~NodeData<CCNode*>() override {log::debug("destructed NodeData<CCNode*>")}
+    struct NodeData<CCNode*> {
+        std::vector<NodeData> m_children;
+
+        LayoutData* m_layout = nullptr;
+        LayoutOptionsData* m_layoutOptions = nullptr;
+
+        FloatPair m_position;
+        FloatPair m_anchorPoint = {.5f, .5f};
+        FloatPair m_scale = {1.f, 1.f};
+        FloatPair m_contentSize;
+        FloatPair m_rotation;
+        FloatPair m_skew;
+
+        int m_zOrder;
+        int m_tag;
+
+        bool m_isVisible = true;
+
+        bool m_ignoreAnchorPointForPosition;
+
+        std::string m_stringID;
+        std::string m_uniqueStringID;
+
+        virtual ~NodeData<CCNode*>() {log::debug("destructed NodeData<CCNode*>");}
     };
 
     template <>
-    struct UniqueNodeData<CCNode*> : public UniqueNodeData {};
+    struct UniqueNodeData<CCNode*> {};
     
 
     // CCSprite
 
     template <>
     struct NodeData<CCSprite*> : public NodeData<CCNode*> {
-        ~NodeData<CCSprite*>() override {log::debug("destructed NodeData<CCSprite*>")}
+        ~NodeData<CCSprite*>() override {log::debug("destructed NodeData<CCSprite*>");}
     };
 
     template <>
@@ -154,7 +174,7 @@ namespace NodeDataAPI {
 
     template <>
     struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {
-        ~NodeData<CCMenuItemSpriteExtra*>() override {log::debug("destructed NodeData<CCMenuItemSpriteExtra*>")}
+        ~NodeData<CCMenuItemSpriteExtra*>() override {log::debug("destructed NodeData<CCMenuItemSpriteExtra*>");}
     };
 
     template <>
