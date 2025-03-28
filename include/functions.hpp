@@ -2,7 +2,6 @@
 #include <Geode/Geode.hpp>
 
 #include "structs.hpp"
-#include "utils.hpp"
 
 #include "exceptions.hpp"
 #ifndef GEODE_IS_WINDOWS

@@ -113,13 +113,19 @@ namespace NodeDataAPI {
     // CCNode 
 
     template <>
-    struct UniqueNodeData<CCNode> {};
+    struct NodeData<CCNode*> : public NodeData {};
+
+    template <>
+    struct UniqueNodeData<CCNode*> {} : public UniqueNodeData;
     
 
     // CCSprite
 
     template <>
-    struct UniqueNodeData<CCSprite*> {
+    struct NodeData<CCSprite*> : public NodeData<CCNode*> {};
+
+    template <>
+    struct UniqueNodeData<CCSprite*> : public UniqueNodeData<CCNode*> {
         bool m_isSpritesheet; 
         std::string m_spriteName;
 
@@ -137,14 +143,17 @@ namespace NodeDataAPI {
         float m_time;
         FloatPair m_skewTo;
         float m_easingRate;
-    }
+    };
     
 
     // CCMenuItemSpriteExtra
 
     template <>
-    struct UniqueNodeData<CCMenuItemSpriteExtra*> {
-        NodeData m_sprite;
+    struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {};
+
+    template <>
+    struct UniqueNodeData<CCMenuItemSpriteExtra*> : public UniqueNodeData<CCNode*> {
+        NodeData<CCNode*> m_sprite;
 
         ccColor3B m_color;
         GLubyte m_opacity;

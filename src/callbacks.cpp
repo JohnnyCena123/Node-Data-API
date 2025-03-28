@@ -22,9 +22,9 @@ void NodeDataAPI::callbacks::CallbackHandler::onCallback(CCObject* sender) {
     auto callback = static_cast<CallbackObject*>(node->getUserObject("callback-data"_spr));
     node->getNormalImage()->runAction(
         CCEaseInOut::create(
-            CCScaleBy::create(
+            CCSkewTo::create(
                 callback->m_data.m_time,
-                callback->m_data.m_scaleBy
+                callback->m_data.m_skewTo
             ), 
             callback->m_data.m_easingRate
         )
