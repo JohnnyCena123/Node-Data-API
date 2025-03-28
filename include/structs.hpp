@@ -113,7 +113,9 @@ namespace NodeDataAPI {
     // CCNode 
 
     template <>
-    struct NodeData<CCNode*> : public NodeData {};
+    struct NodeData<CCNode*> : public NodeData {
+       virtual ~NodeData<CCNode*>() override {log::debug("destructed NodeData<CCNode*>")}
+    };
 
     template <>
     struct UniqueNodeData<CCNode*> : public UniqueNodeData {};
@@ -122,7 +124,9 @@ namespace NodeDataAPI {
     // CCSprite
 
     template <>
-    struct NodeData<CCSprite*> : public NodeData<CCNode*> {};
+    struct NodeData<CCSprite*> : public NodeData<CCNode*> {
+        ~NodeData<CCSprite*>() override {log::debug("destructed NodeData<CCSprite*>")}
+    };
 
     template <>
     struct UniqueNodeData<CCSprite*> : public UniqueNodeData<CCNode*> {
@@ -149,7 +153,9 @@ namespace NodeDataAPI {
     // CCMenuItemSpriteExtra
 
     template <>
-    struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {};
+    struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {
+        ~NodeData<CCMenuItemSpriteExtra*>() override {log::debug("destructed NodeData<CCMenuItemSpriteExtra*>")}
+    };
 
     template <>
     struct UniqueNodeData<CCMenuItemSpriteExtra*> : public UniqueNodeData<CCNode*> {

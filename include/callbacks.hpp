@@ -3,7 +3,7 @@
 
 using namespace geode::prelude;
 
-namespace NodeDataAPI { namespace callbacks {
+namespace NodeDataAPI::callbacks {
 
     class CallbackObject : public CCObject {
     public:
@@ -18,7 +18,7 @@ namespace NodeDataAPI { namespace callbacks {
         void onCallback(CCObject* sender);
     };
 
-}}
+}
 
 $execute {
     NodeDataAPI::callbacks::CallbackHandler::callbackHandler->retain();
