@@ -10,5 +10,15 @@
 	"name": "Node Data API",
 	"version": "v1.0.0",
 	"developer": "Johnny Cena",
-	"description": ""
+	"description": "",
+	"settings": {
+		"logging-destructions-enabled": {
+			"name": "Log destructions",
+			"type": "bool",
+			"default": false,
+			"description": "ignore this if you're not a developer.",
+			"enable-if": "saved:is-console-logging-debug && saved:is-file-logging-debug ",
+			"enable-if-description": "Enable the Debug log level in either the Console or the File settings!"
+		}
+	}
 }
