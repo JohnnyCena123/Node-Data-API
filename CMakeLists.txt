@@ -8,7 +8,14 @@ project(NodeDataAPI VERSION 1.0.0)
 
 # Set up the mod binary
 add_library(${PROJECT_NAME} SHARED
-    src/*.cpp
+    src/main.cpp
+    src/base.cpp
+
+    src/CCNode.cpp
+    src/CCSprite.cpp
+    
+    src/callbacks.cpp
+    src/CCMenuItemSpriteExtra.cpp
     # Add any extra C++ source files here
 )
 
