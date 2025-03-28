@@ -126,7 +126,7 @@ namespace NodeDataAPI {
         ret->setID(data.m_stringID);
         ret->setUserObject("unique-string-id"_spr, CCString::create(data.m_uniqueStringID));
 
-        return ret;
+        return static_cast<NodeSubclass>(ret);
     }
 
 
