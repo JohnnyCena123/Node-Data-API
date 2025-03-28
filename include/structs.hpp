@@ -106,6 +106,7 @@ namespace NodeDataAPI {
         std::string m_stringID;
         std::string m_uniqueStringID;
 
+        virtual ~NodeData() {log::debug("destructed NodeData!");}
     };
 
     
@@ -132,9 +133,9 @@ namespace NodeDataAPI {
 
     // callbacks
 
-    struct CallbackData {
+    struct CallbackData { // currently the only callback possible is skewing the button, but its just a placeholder so more options are coming soon
         float m_time;
-        float m_scaleBy;
+        FloatPair m_skewTo;
         float m_easingRate;
     }
     
@@ -144,7 +145,11 @@ namespace NodeDataAPI {
     template <>
     struct UniqueNodeData<CCMenuItemSpriteExtra*> {
         NodeData m_sprite;
-        CallbackData callback;
+
+        ccColor3B m_color;
+        GLubyte m_opacity;
+
+        CallbackData m_callback;
     };
 
 

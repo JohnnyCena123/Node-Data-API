@@ -230,23 +230,46 @@ namespace NodeDataAPI {
             );
         }
 
-        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
-            if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
+        inline CCNode* createNodeExt(NodeData data) {
+            if (auto spriteData = typeinfo_cast<CCSprite*>(data)) {
                 // todo: add more
 
-                return cloneNode<CCSprite*>(sprite);
+                return createNodeExt<CCSprite*>(spriteData);
             } 
 
-            if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+            if (auto MISE_Data = typeinfo_cast<CCMenuItemSpriteExtra*>(data)) {
                 // todo: add more
 
-                return cloneNode<CCMenuItemSpriteExtra*>(menuItemSpriteExtra);
+                return createNodeExt<CCMenuItemSpriteExtra*>(MISE_Data);
             } 
             
 
             // todo: add more
 
-            return cloneNode<CCNode*>(node);
+            return createNodeExt<CCNode*>(data);
+        }
+
+        inline NodeData getDataExt(CCNode* node) {
+            if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
+                // todo: add more
+
+                return getDataExt<CCSprite*>(sprite);
+            } 
+
+            if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+                // todo: add more
+
+                return getDataExt<CCMenuItemSpriteExtra*>(menuItemSpriteExtra);
+            } 
+            
+
+            // todo: add more
+
+            return getDataExt<CCNode*>(node);
+        }
+
+        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
+            
         }
 
     }
