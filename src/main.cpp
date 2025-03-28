@@ -51,7 +51,7 @@ class $modify(MyMenuLayer, MenuLayer) {
     }
 
     void cloneTitle(float param) {
-        auto spr = NodeDataAPI::utils::cloneNode(static_cast<CCSprite*>(this->getChildByID("main-title")));
+        auto spr = NodeDataAPI::utils::cloneNodeExt(this->getChildByID("main-title"));
         this->addChild(spr);
         spr->runAction(CCEaseBounceOut::create(CCMoveBy::create(5.f, ccp(0, -150))));
         spr->runAction(CCMoveBy::create(5.f, ccp(-500, 0)));

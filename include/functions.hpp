@@ -18,10 +18,10 @@ namespace NodeDataAPI {
         CCNode* getDesByUniqueID(std::string ID, CCNode* node);
         inline CCNode* getNodeByUniqueID(std::string ID);
 
-        inline CCNode* createNodeUniqueExt(NodeData<CCNode*> data, bool considerChildren = true);
+        inline CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data, bool considerChildren = true);
         inline CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
 
-        inline NodeData<CCNode*> getUniqueDataExt(CCNode* node, bool considerChildren = true);
+        inline UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node, bool considerChildren = true);
         inline NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
 
         inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true);
@@ -52,7 +52,7 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass> data, bool considerChildren = true) {
-        auto ret = createNodeUniqueExt(data.m_uniqueData);
+        auto ret = utils::createNodeUniqueExt(data.m_uniqueData);
     
         if (data.m_layout) {
             if (considerChildren) {
@@ -153,7 +153,7 @@ namespace NodeDataAPI {
     template <class NodeSubclass>
     NodeData<NodeSubclass> getNodeData(NodeSubclass node, bool considerChildren = true) {
         NodeData<NodeSubclass> ret;
-        ret.uniqueData(getUniqueNodeData<NodeSubclass>(node));
+        ret.m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
 
         if (considerChildren) {
             for (NodeSubclass child : CCArrayExt<NodeSubclass>(node->getChildren())) {  

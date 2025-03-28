@@ -27,7 +27,7 @@ CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNo
         return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(*spriteData, considerChildren);
     } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>*>(&data)) {
         return NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(*menuItemSpriteExtraData, considerChildren);
-    } else return createNodeWithUniqueData<NodeDataAPI::NodeData<CCNode*>>(data, considerChildren);
+    } else return NodeDataAPI::createNodeWithUniqueData<NodeDataAPI::NodeData<CCNode*>>(data, considerChildren);
 }
 
 CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*> data, bool considerChildren = true) {
@@ -50,8 +50,8 @@ NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::utils::getUniqueDataExt(CCNode
 NodeDataAPI::NodeData<CCNode*> NodeDataAPI::utils::getDataExt(CCNode* node, bool considerChildren = true) {
     if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
         return NodeDataAPI::getNodeData<CCSprite*>(sprite, considerChildren);
-    } else if (auto MISE = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
-        return NodeDataAPI::getNodeData<CCMenuItemSpriteExtra*>(MISE, considerChildren);
+    } else if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+        return NodeDataAPI::getNodeData<CCMenuItemSpriteExtra*>(menuItemSpriteExtra, considerChildren);
     } else return NodeDataAPI::getNodeData<CCNode*>(node, considerChildren);
 }
 
