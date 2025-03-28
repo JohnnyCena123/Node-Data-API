@@ -7,12 +7,14 @@ using namespace geode::prelude;
 void updateSavedLogLevels() {
     auto geodeLoader = Loader::get()->getLoadedMod("geode.loader");
 
-    auto consoleSetting = std::static_pointer_cast<StringSettingV3>(geodeLoader->getSetting("console-log-level"));
-    auto fileSetting = std::static_pointer_cast<StringSettingV3>(geodeLoader->getSetting("file-log-level"));
+    if (!geodeLoader) {
+        log::error("couldnt get the geode loader. something has gone TERRIBLY wrong.");
+        return;
+    }
 
     (void)Mod::get()->setSavedValue<bool>(
         "is-logging-level-debug", 
-        consoleSetting->getValue() == "debug" || fileSetting->getValue() == "debug"
+        geodeLoader->getSettingValue<bool>("console-logging-level") == "debug" || geodeLoader->getSettingValue<bool>("file-logging-level") == "debug"
     );
 }
 

@@ -4,15 +4,15 @@
 
 using namespace geode::prelude;
 
-CallbackObject* NodeDataAPI::callbacks::CallbackObject::create(CallbackData data) {
-    CallbackObject* ret = new CallbackObject();
+NodeDataAPI::callbacks::CallbackObject* NodeDataAPI::callbacks::CallbackObject::create(CallbackData data) {
+    auto ret = new NodeDataAPI::callbacks::CallbackObject();
     ret->m_data = data;
     ret->autorelease(); 
     return ret;
 }
 
-CallbackObject* NodeDataAPI::callbacks::CallbackHandler::create() {
-    CallbackHandler* ret = new CallbackHandler();
+NodeDataAPI::callbacks::CallbackObject* NodeDataAPI::callbacks::CallbackHandler::create() {
+    auto ret = new NodeDataAPI::callbacks::CallbackHandler();
     ret->autorelease(); 
     return ret;
 }
@@ -28,5 +28,5 @@ void NodeDataAPI::callbacks::CallbackHandler::onCallback(CCObject* sender) {
             ), 
             callback->m_data.m_easingRate
         )
-    )
+    );
 }
