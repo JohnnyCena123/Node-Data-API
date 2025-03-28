@@ -40,11 +40,11 @@ namespace NodeDataAPI {
 
         FloatPair m_defaultScaleLimits;
 
-        ~AxisLayoutData() override {logDtor("AxisLayoutData");}
+        virtual ~AxisLayoutData() override {logDtor("AxisLayoutData");}
     };
 
     struct AnchorLayoutData : public LayoutData {
-        ~AnchorLayoutData() override {logDtor("AnchorLayoutData");}
+        virtual ~AnchorLayoutData() override {logDtor("AnchorLayoutData");}
     };
 
     
@@ -68,7 +68,7 @@ namespace NodeDataAPI {
 
         std::optional<AxisAlignment> m_crossAxisAlignment;
 
-        ~AxisLayoutOptionsData() override {logDtor("AxisLayoutOptionsData");}
+        virtual ~AxisLayoutOptionsData() override {logDtor("AxisLayoutOptionsData");}
     };
     
 
@@ -76,7 +76,7 @@ namespace NodeDataAPI {
         Anchor m_anchor;
         FloatPair m_offset;
     
-        ~AnchorLayoutOptionsData() override {logDtor("AnchorLayoutOptionsData!");}
+        virtual ~AnchorLayoutOptionsData() override {logDtor("AnchorLayoutOptionsData!");}
     };
     
 
@@ -85,6 +85,11 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     struct NodeData {
+    private:
+        UniqueNodeData<NodeSubclass> m_uniqueData;
+    public:
+        virtual UniqueNodeData<NodeSubclass> uniqueData() {return m_uniqueData;}
+        virtual void uniqueData(UniqueNodeData<NodeSubclass*> data) {m_uniqueData = data;}
 
         UniqueNodeData<NodeSubclass> m_uniqueData;
 
@@ -112,12 +117,19 @@ namespace NodeDataAPI {
     };
 
     
-    // CCNode 
+    // CCNode
+
+    template <>
+    struct UniqueNodeData<CCNode*> {}; 
 
     template <>
     struct NodeData<CCNode*> {
-
+    private:
         UniqueNodeData<CCNode*> m_uniqueData;
+    public:
+        virtual UniqueNodeData<CCNode*> uniqueData() {return m_uniqueData;}
+        virtual void uniqueData(UniqueNodeData<CCNode*> data) {m_uniqueData = data;}
+    
 
         std::vector<NodeData<CCNode*>> m_children;
 
@@ -143,17 +155,9 @@ namespace NodeDataAPI {
 
         virtual ~NodeData<CCNode*>() {logDtor("NodeData<CCNode*>");}
     };
-
-    template <>
-    struct UniqueNodeData<CCNode*> {};
     
 
     // CCSprite
-
-    template <>
-    struct NodeData<CCSprite*> : public NodeData<CCNode*> {
-        virtual ~NodeData<CCSprite*>() override {logDtor("NodeData<CCSprite*>");}
-    };
 
     template <>
     struct UniqueNodeData<CCSprite*> : public UniqueNodeData<CCNode*> {
@@ -165,6 +169,17 @@ namespace NodeDataAPI {
 
         bool m_flipX;
         bool m_flipY;
+    };
+
+    template <>
+    struct NodeData<CCSprite*> : public NodeData<CCNode*> {
+    private:
+        UniqueNodeData<CCSprite*> m_uniqueData;
+    public:
+        virtual UniqueNodeData<CCSprite*> uniqueData() override {return m_uniqueData;}
+        virtual void uniqueData(UniqueNodeData<CCSprite*> data) override {m_uniqueData = data;}
+
+        virtual ~NodeData<CCSprite*>() override {logDtor("NodeData<CCSprite*>");}
     };
 
 
@@ -180,11 +195,6 @@ namespace NodeDataAPI {
     // CCMenuItemSpriteExtra
 
     template <>
-    struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {
-        virtual ~NodeData<CCMenuItemSpriteExtra*>() override {logDtor("NodeData<CCMenuItemSpriteExtra*>");}
-    };
-
-    template <>
     struct UniqueNodeData<CCMenuItemSpriteExtra*> : public UniqueNodeData<CCNode*> {
         NodeData<CCNode*> m_sprite;
 
@@ -192,6 +202,17 @@ namespace NodeDataAPI {
         GLubyte m_opacity;
 
         CallbackData m_callback;
+    };
+
+    template <>
+    struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {
+    private:
+        UniqueNodeData<CCMenuItemSpriteExtra*> m_uniqueData;
+    public:
+        virtual UniqueNodeData<CCMenuItemSpriteExtra*> uniqueData() override {return m_uniqueData;}
+        virtual void uniqueData(UniqueNodeData<CCMenuItemSpriteExtra*> data) override {m_uniqueData = data;}
+    
+        virtual ~NodeData<CCMenuItemSpriteExtra*>() override {logDtor("NodeData<CCMenuItemSpriteExtra*>");}
     };
 
 

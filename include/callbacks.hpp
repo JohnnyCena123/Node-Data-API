@@ -18,7 +18,7 @@ namespace NodeDataAPI::callbacks {
     class CallbackHandler : public CCObject {
         static CallbackHandler* create();
     public:
-        static constexpr CallbackHandler* callbackHandler = CallbackHandler::create();
+        static CallbackHandler const* s_callbackHandler;
         void onCallback(CCObject* sender);
 
         virtual ~CallbackHandler() override {logDtor("CallbackHandler");}
@@ -27,5 +27,5 @@ namespace NodeDataAPI::callbacks {
 }
 
 $execute {
-    NodeDataAPI::callbacks::CallbackHandler::callbackHandler->retain();
+    NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler->retain();
 }

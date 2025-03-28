@@ -8,7 +8,10 @@ using namespace geode::prelude;
 template <>
 CCMenuItemSpriteExtra* NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*> data) {
     auto spr = NodeDataAPI::utils::createNodeExt(data.m_sprite);
-    auto ret = CCMenuItemSpriteExtra::create(spr, NodeDataAPI::callbacks::CallbackHandler::callbackHandler, menu_selector(NodeDataAPI::callbacks::CallbackHandler::onCallback));
+    auto ret = CCMenuItemSpriteExtra::create(
+        spr, NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler, 
+        menu_selector(NodeDataAPI::callbacks::CallbackHandler::onCallback)
+    );
 
     ret->setColor(data.m_color);
     ret->setOpacity(data.m_opacity);
@@ -28,7 +31,8 @@ NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*> NodeDataAPI::getUniqueNodeDa
     ret.m_color = node->getColor();
     ret.m_opacity = node->getOpacity();
 
-    ret.m_callback = static_cast<CallbackObject*>(node->getUserObject("callback-data"_spr))->m_data;
+    auto callbackObject = static_cast<CallbackObject*>(node->getUserObject("callback-data"_spr));
+    if (callbackObject) ret.m_callback = callbackObject->m_data;
 
     return ret;
 }
