@@ -2,6 +2,7 @@
 #include <Geode/Geode.hpp>
 
 #include "structs.hpp"
+#include "utils.hpp"
 
 #include "exceptions.hpp"
 #ifndef GEODE_IS_WINDOWS
@@ -36,23 +37,12 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass> data, bool considerChildren = true) {
-        auto uniqueSpriteData = static_cast<UniqueNodeData<CCSprite*>*>(&data.m_uniqueData);
-        log::debug("data.m_uniqueData: ({}, {}, {}, {}, {}, {}, {}, {})", 
-            uniqueSpriteData->m_isSpritesheet,
-            uniqueSpriteData->m_spriteName,
-            uniqueSpriteData->m_color.r,
-            uniqueSpriteData->m_color.g,
-            uniqueSpriteData->m_color.b,
-            uniqueSpriteData->m_opacity,
-            uniqueSpriteData->m_flipX,
-            uniqueSpriteData->m_flipY
-        );
         auto ret = createNodeWithUniqueData(data.m_uniqueData);
     
         if (data.m_layout) {
             if (considerChildren) {
                 for (auto childData : data.m_children) {
-                    ret->addChild(createNodeWithData(childData));
+                    ret->addChild(createNodeWithDataExt(childData));
                 }
             }
 
@@ -240,17 +230,24 @@ namespace NodeDataAPI {
             );
         }
 
-    //     inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
-    //         if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
-    //             // todo: add more
+        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
+            if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
+                // todo: add more
 
-    //             return cloneNode<CCSprite*>(sprite);
-    //         } 
+                return cloneNode<CCSprite*>(sprite);
+            } 
 
-    //         // todo: add more
+            if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+                // todo: add more
 
-    //         return cloneNode<CCNode*>(node);
-    //     }
+                return cloneNode<CCMenuItemSpriteExtra*>(menuItemSpriteExtra);
+            } 
+            
+
+            // todo: add more
+
+            return cloneNode<CCNode*>(node);
+        }
 
     }
 

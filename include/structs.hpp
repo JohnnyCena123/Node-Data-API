@@ -129,4 +129,24 @@ namespace NodeDataAPI {
         bool m_flipY;
     };
 
+
+    // callbacks
+
+    struct CallbackData {
+        float m_time;
+        float m_scaleBy;
+        float m_easingRate;
+    }
+    
+
+    // CCMenuItemSpriteExtra
+
+    template <>
+    struct UniqueNodeData<CCMenuItemSpriteExtra*> {
+        NodeData m_sprite;
+        CallbackData callback;
+    };
+
+
+
 }
