@@ -19,14 +19,15 @@ namespace NodeDataAPI {
         inline CCNode* getNodeByUniqueID(std::string ID);
 
         inline CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data);
-        inline CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
+        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
 
         inline UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node);
-        inline NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
+        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
 
-        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true);
+        CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true);
 
     }
+
 
     // base
 
