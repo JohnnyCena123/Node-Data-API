@@ -10,12 +10,16 @@ struct FloatPair {
 
 namespace NodeDataAPI {
 
+    inline void logDtor(std::string str) {
+        if (Mod::get()->getSettingValue<bool>("logging-destructions-enabled")) log::debug("destructed {}!", str);
+    }
+
     // base
 
     struct LayoutData {
         bool m_isIgnoreInvisibleChildren;
 
-        virtual ~LayoutData() {log::debug("destructed LayoutData!");}
+        virtual ~LayoutData() {logDtor("LayoutData");}
     };
 
     struct AxisLayoutData : public LayoutData {
@@ -36,16 +40,16 @@ namespace NodeDataAPI {
 
         FloatPair m_defaultScaleLimits;
 
-        ~AxisLayoutData() override {log::debug("destructed AxisLayoutData!");}
+        ~AxisLayoutData() override {logDtor("AxisLayoutData");}
     };
 
     struct AnchorLayoutData : public LayoutData {
-        ~AnchorLayoutData() override {log::debug("destructed AnchorLayoutData!");}
+        ~AnchorLayoutData() override {logDtor("AnchorLayoutData");}
     };
 
     
     struct LayoutOptionsData {
-        virtual ~LayoutOptionsData() {log::debug("destructed LayoutOptionsData!");}
+        virtual ~LayoutOptionsData() {logDtor("LayoutOptionsData");}
     };
 
     struct AxisLayoutOptionsData : public LayoutOptionsData {
@@ -64,7 +68,7 @@ namespace NodeDataAPI {
 
         std::optional<AxisAlignment> m_crossAxisAlignment;
 
-        ~AxisLayoutOptionsData() override {log::debug("destructed AxisLayoutOptionsData!");}
+        ~AxisLayoutOptionsData() override {logDtor("AxisLayoutOptionsData");}
     };
     
 
@@ -72,7 +76,7 @@ namespace NodeDataAPI {
         Anchor m_anchor;
         FloatPair m_offset;
     
-        ~AnchorLayoutOptionsData() override {log::debug("destructed AnchorLayoutOptionsData!");}
+        ~AnchorLayoutOptionsData() override {logDtor("AnchorLayoutOptionsData!");}
     };
     
 
@@ -112,7 +116,10 @@ namespace NodeDataAPI {
 
     template <>
     struct NodeData<CCNode*> {
-        std::vector<NodeData> m_children;
+
+        UniqueNodeData<CCNode*> m_uniqueData;
+
+        std::vector<NodeData<CCNode*>> m_children;
 
         LayoutData* m_layout = nullptr;
         LayoutOptionsData* m_layoutOptions = nullptr;
@@ -134,7 +141,7 @@ namespace NodeDataAPI {
         std::string m_stringID;
         std::string m_uniqueStringID;
 
-        virtual ~NodeData<CCNode*>() {log::debug("destructed NodeData<CCNode*>");}
+        virtual ~NodeData<CCNode*>() {logDtor("NodeData<CCNode*>");}
     };
 
     template <>
@@ -145,7 +152,7 @@ namespace NodeDataAPI {
 
     template <>
     struct NodeData<CCSprite*> : public NodeData<CCNode*> {
-        ~NodeData<CCSprite*>() override {log::debug("destructed NodeData<CCSprite*>");}
+        virtual ~NodeData<CCSprite*>() override {logDtor("NodeData<CCSprite*>");}
     };
 
     template <>
@@ -174,7 +181,7 @@ namespace NodeDataAPI {
 
     template <>
     struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {
-        ~NodeData<CCMenuItemSpriteExtra*>() override {log::debug("destructed NodeData<CCMenuItemSpriteExtra*>");}
+        virtual ~NodeData<CCMenuItemSpriteExtra*>() override {logDtor("NodeData<CCMenuItemSpriteExtra*>");}
     };
 
     template <>

@@ -9,6 +9,8 @@ namespace NodeDataAPI::callbacks {
     public:
         CallbackData m_data;
         static CallbackObject* create(CallbackData data);
+
+        virtual ~CallbackObject() {log::debug()}
     }
 
     class CallbackHandler : public CCObject {

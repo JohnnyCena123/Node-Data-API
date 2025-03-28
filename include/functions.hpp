@@ -227,11 +227,11 @@ namespace NodeDataAPI {
         }
 
         CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true) {
-            if (auto spriteData = typeinfo_cast<CCSprite*>(data)) {
+            if (auto spriteData = typeinfo_cast<NodeData<CCSprite*>>(data)) {
                 return createNodeWithData<CCSprite*>(spriteData, considerChildren);
-            } else if (auto MISE_Data = typeinfo_cast<CCMenuItemSpriteExtra*>(data)) {
+            } else if (auto MISE_Data = typeinfo_cast<NodeData<CCMenuItemSpriteExtra*>>(data)) {
                 return createNodeWithData<CCMenuItemSpriteExtra*>(MISE_Data, considerChildren);
-            } else return createNodeWithData<CCNode*>(data, considerChildren);
+            } else return createNodeWithData<NodeData<CCNode*>>(data, considerChildren);
         }
 
         NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true) {

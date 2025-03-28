@@ -4,6 +4,27 @@
 
 using namespace geode::prelude;
 
+void updateSavedLogLevels() {
+    auto geodeLoader = Loader::get()->getLoadedMod("geode.loader");
+
+    auto consoleSetting = std::static_pointer_cast<StringSettingV3>(geodeLoader->getSetting("console-log-level"));
+    auto fileSetting = std::static_pointer_cast<StringSettingV3>(geodeLoader->getSetting("file-log-level"));
+
+    (void)Mod::get()->setSavedValue<bool>(
+        "is-logging-level-debug", 
+        consoleSetting->getValue() == "debug" || fileSetting->getValue() == "debug"
+    );
+}
+
+$execute {
+    updateSavedLogLevels();
+    listenForAllSettingChangesV3(
+        [](std::shared_ptr<SettingV3> setting) {updateSavedLogLevels();}, 
+        Loader::get()->getLoadedMod("geode.loader")
+    );
+}
+
+
 #include <Geode/modify/MenuLayer.hpp>
 class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
