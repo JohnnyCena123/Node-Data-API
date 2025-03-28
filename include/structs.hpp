@@ -81,12 +81,12 @@ namespace NodeDataAPI {
     
 
     template <class NodeSubclass>
-    struct UniqueNodeData {};
+    struct UniqueNodeData {  
+        virtual ~UniqueNodeData() {logDtor("UniqueNodeData");}
+    };
 
     template <class NodeSubclass>
     struct NodeData {
-
-        UniqueNodeData<NodeSubclass> m_uniqueData;
 
         UniqueNodeData<NodeSubclass> m_uniqueData;
 
@@ -111,16 +111,22 @@ namespace NodeDataAPI {
 
         std::string m_stringID;
         std::string m_uniqueStringID;
+ 
+        virtual ~NodeData() {logDtor("NodeData");}
     };
 
     
     // CCNode
 
     template <>
-    struct UniqueNodeData<CCNode*> {}; 
+    struct UniqueNodeData<CCNode*> {  
+        virtual ~UniqueNodeData<CCNode*>() {logDtor("UniqueNodeData<CCNode*>");}
+    }; 
 
     template <>
     struct NodeData<CCNode*> {
+
+        UniqueNodeData<CCNode*> m_uniqueData;
 
         std::vector<NodeData<CCNode*>> m_children;
 
@@ -151,7 +157,7 @@ namespace NodeDataAPI {
     // CCSprite
 
     template <>
-    struct UniqueNodeData<CCSprite*> : public UniqueNodeData<CCNode*> {
+    struct UniqueNodeData<CCSprite*> : public UniqueNodeData<CCNode*> {  
         bool m_isSpritesheet; 
         std::string m_spriteName;
 
@@ -160,6 +166,8 @@ namespace NodeDataAPI {
 
         bool m_flipX;
         bool m_flipY;
+
+        virtual ~UniqueNodeData<CCSprite*>() override {logDtor("UniqueNodeData<CCSprite*>");}
     };
 
     template <>
@@ -188,6 +196,9 @@ namespace NodeDataAPI {
         GLubyte m_opacity;
 
         CallbackData m_callback;
+
+        virtual ~UniqueNodeData<CCMenuItemSpriteExtra*>() override {logDtor("UniqueNodeData<CCMenuItemSpriteExtra*>");}
+    
     };
 
     template <>
@@ -195,7 +206,5 @@ namespace NodeDataAPI {
     
         virtual ~NodeData<CCMenuItemSpriteExtra*>() override {logDtor("NodeData<CCMenuItemSpriteExtra*>");}
     };
-
-
 
 }

@@ -18,14 +18,10 @@ namespace NodeDataAPI::callbacks {
     class CallbackHandler : public CCObject {
         static CallbackHandler* create();
     public:
-        static CallbackHandler const* s_callbackHandler;
+        static CallbackHandler* s_callbackHandler;
         void onCallback(CCObject* sender);
 
         virtual ~CallbackHandler() override {logDtor("CallbackHandler");}
     };
 
-}
-
-$execute {
-    NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler->retain();
 }

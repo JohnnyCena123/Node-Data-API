@@ -22,7 +22,7 @@ CCNode* NodeDataAPI::utils::getNodeByUniqueID(std::string ID) {
 }
 
 
-CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNode*> data, bool considerChildren = true) {
+CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNode*> data) {
     if (auto spriteData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(&data)) {
         return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(*spriteData, considerChildren);
     } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>*>(&data)) {
@@ -30,7 +30,7 @@ CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNo
     } else return NodeDataAPI::createNodeWithUniqueData<NodeDataAPI::NodeData<CCNode*>>(data, considerChildren);
 }
 
-CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*> data, bool considerChildren = true) {
+CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*> data, bool considerChildren) {
     if (auto spriteData = typeinfo_cast<NodeDataAPI::NodeData<CCSprite*>*>(&data)) {
         return NodeDataAPI::createNodeWithData<CCSprite*>(*spriteData, considerChildren);
     } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::NodeData<CCMenuItemSpriteExtra*>*>(&data)) {
@@ -39,7 +39,7 @@ CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*> data, b
 }
 
 
-NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::utils::getUniqueDataExt(CCNode* node, bool considerChildren = true) {
+NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::utils::getUniqueDataExt(CCNode* node) {
     if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
         return NodeDataAPI::getUniqueNodeData<CCSprite*>(sprite, considerChildren);
     } else if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
@@ -47,7 +47,7 @@ NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::utils::getUniqueDataExt(CCNode
     } else return NodeDataAPI::getUniqueNodeData<CCNode*>(node, considerChildren);
 }
 
-NodeDataAPI::NodeData<CCNode*> NodeDataAPI::utils::getDataExt(CCNode* node, bool considerChildren = true) {
+NodeDataAPI::NodeData<CCNode*> NodeDataAPI::utils::getDataExt(CCNode* node, bool considerChildren) {
     if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
         return NodeDataAPI::getNodeData<CCSprite*>(sprite, considerChildren);
     } else if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {

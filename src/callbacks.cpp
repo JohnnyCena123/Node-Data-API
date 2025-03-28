@@ -17,7 +17,7 @@ NodeDataAPI::callbacks::CallbackHandler* NodeDataAPI::callbacks::CallbackHandler
     return ret;
 }
 
-NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler = CallbackHandler::create();
+NodeDataAPI::callbacks::CallbackHandler* NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler = nullptr;
 
 void NodeDataAPI::callbacks::CallbackHandler::onCallback(CCObject* sender) {
     auto node = static_cast<CCMenuItemSpriteExtra*>(sender);
@@ -31,4 +31,9 @@ void NodeDataAPI::callbacks::CallbackHandler::onCallback(CCObject* sender) {
             callback->m_data.m_easingRate
         )
     );
+}
+
+$execute {
+    NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler = NodeDataAPI::callbacks::CallbackHandler::create();
+    NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler->retain();
 }
