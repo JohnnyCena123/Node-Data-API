@@ -85,11 +85,8 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     struct NodeData {
-    private:
+
         UniqueNodeData<NodeSubclass> m_uniqueData;
-    public:
-        virtual UniqueNodeData<NodeSubclass> uniqueData() {return m_uniqueData;}
-        virtual void uniqueData(UniqueNodeData<NodeSubclass*> data) {m_uniqueData = data;}
 
         UniqueNodeData<NodeSubclass> m_uniqueData;
 
@@ -124,12 +121,6 @@ namespace NodeDataAPI {
 
     template <>
     struct NodeData<CCNode*> {
-    private:
-        UniqueNodeData<CCNode*> m_uniqueData;
-    public:
-        virtual UniqueNodeData<CCNode*> uniqueData() {return m_uniqueData;}
-        virtual void uniqueData(UniqueNodeData<CCNode*> data) {m_uniqueData = data;}
-    
 
         std::vector<NodeData<CCNode*>> m_children;
 
@@ -173,11 +164,6 @@ namespace NodeDataAPI {
 
     template <>
     struct NodeData<CCSprite*> : public NodeData<CCNode*> {
-    private:
-        UniqueNodeData<CCSprite*> m_uniqueData;
-    public:
-        virtual UniqueNodeData<CCSprite*> uniqueData() override {return m_uniqueData;}
-        virtual void uniqueData(UniqueNodeData<CCSprite*> data) override {m_uniqueData = data;}
 
         virtual ~NodeData<CCSprite*>() override {logDtor("NodeData<CCSprite*>");}
     };
@@ -206,11 +192,6 @@ namespace NodeDataAPI {
 
     template <>
     struct NodeData<CCMenuItemSpriteExtra*> : public NodeData<CCNode*> {
-    private:
-        UniqueNodeData<CCMenuItemSpriteExtra*> m_uniqueData;
-    public:
-        virtual UniqueNodeData<CCMenuItemSpriteExtra*> uniqueData() override {return m_uniqueData;}
-        virtual void uniqueData(UniqueNodeData<CCMenuItemSpriteExtra*> data) override {m_uniqueData = data;}
     
         virtual ~NodeData<CCMenuItemSpriteExtra*>() override {logDtor("NodeData<CCMenuItemSpriteExtra*>");}
     };

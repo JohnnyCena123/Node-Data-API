@@ -12,6 +12,22 @@ using namespace geode::prelude;
 
 namespace NodeDataAPI {
 
+    namespace utils {
+
+        // Des = Descendant
+        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
+        inline CCNode* getNodeByUniqueID(std::string ID);
+
+        inline CCNode* createNodeUniqueExt(NodeData<CCNode*> data, bool considerChildren = true);
+        inline CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
+
+        inline NodeData<CCNode*> getUniqueDataExt(CCNode* node, bool considerChildren = true);
+        inline NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
+
+        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true);
+
+    }
+
     // base
 
     template <class NodeSubclass>
@@ -36,12 +52,12 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass> data, bool considerChildren = true) {
-        auto ret = createNodeWithUniqueData(data.m_uniqueData);
+        auto ret = createNodeUniqueExt(data.m_uniqueData);
     
         if (data.m_layout) {
             if (considerChildren) {
                 for (auto childData : data.m_children) {
-                    ret->addChild(createNodeWithDataExt(childData));
+                    ret->addChild(createNodeExt(childData));
                 }
             }
 
@@ -59,8 +75,7 @@ namespace NodeDataAPI {
                     ->setAutoGrowAxis(axisLayoutData->m_allowAndMinLength)
                     ->setDefaultScaleLimits(axisLayoutData->m_defaultScaleLimits.x, axisLayoutData->m_defaultScaleLimits.y)
                 );
-            } 
-            else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data.m_layout)) {
+            } else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data.m_layout)) {
                 ret->setLayout(AnchorLayout::create());
             }
 
@@ -84,8 +99,7 @@ namespace NodeDataAPI {
                     ->setScalePriority(axisLayoutOptionsData->m_scalePriority)
                     ->setCrossAxisAlignment(axisLayoutOptionsData->m_crossAxisAlignment)
                 );
-            } 
-            else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data.m_layoutOptions)) {
+            } else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data.m_layoutOptions)) {
                     ret->setLayoutOptions(AnchorLayoutOptions::create()
                     ->setAnchor(anchorLayoutOptionsData->m_anchor)
                     ->setOffset({anchorLayoutOptionsData->m_offset.x, anchorLayoutOptionsData->m_offset.y})
@@ -162,8 +176,7 @@ namespace NodeDataAPI {
                 axisLayoutData->m_allowAndMinLength = axisLayout->getAutoGrowAxis();
                 axisLayoutData->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()};
                 ret.m_layout = axisLayoutData;  
-            } 
-            else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(layout)) {
+            } else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(layout)) {
                 ret.m_layout = new AnchorLayoutData();
             }   
 
@@ -184,8 +197,7 @@ namespace NodeDataAPI {
                 axisLayoutOptionsData->m_scalePriority = axisLayoutOptions->getScalePriority();
                 axisLayoutOptionsData->m_crossAxisAlignment = axisLayoutOptions->getCrossAxisAlignment();
                 ret.m_layoutOptions = axisLayoutOptionsData;
-            } 
-            else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(layoutOptions)) {
+            } else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(layoutOptions)) {
                 auto anchorLayoutOptionsData = new AnchorLayoutOptionsData();
                 anchorLayoutOptionsData->m_anchor = anchorLayoutOptions->getAnchor();
                 anchorLayoutOptionsData->m_offset = {anchorLayoutOptions->getOffset().x, anchorLayoutOptions->getOffset().y};
@@ -217,21 +229,6 @@ namespace NodeDataAPI {
     template <class NodeSubclass>
     inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
         return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
-    }
-
-    namespace utils {
-
-        // Des = Descendant
-        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
-
-        inline CCNode* getNodeByUniqueID(std::string ID);
-
-        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
-
-        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
-
-        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true);
-
     }
 
     // CCNode 
