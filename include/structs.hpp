@@ -116,7 +116,7 @@ namespace NodeDataAPI {
     struct NodeData<CCNode*> : public NodeData {};
 
     template <>
-    struct UniqueNodeData<CCNode*> {} : public UniqueNodeData;
+    struct UniqueNodeData<CCNode*> : public UniqueNodeData {};
     
 
     // CCSprite

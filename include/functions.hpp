@@ -223,52 +223,27 @@ namespace NodeDataAPI {
 
         template <class NodeSubclass>
         inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
-            return createNodeWithData<NodeSubclass>(
-                getNodeData<NodeSubclass>(node, considerChildren), 
-                considerChildren
-            );
+            return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
         }
 
-        inline CCNode* createNodeExt(NodeData data) {
+        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true) {
             if (auto spriteData = typeinfo_cast<CCSprite*>(data)) {
-                // todo: add more
-
-                return createNodeExt<CCSprite*>(spriteData);
-            } 
-
-            if (auto MISE_Data = typeinfo_cast<CCMenuItemSpriteExtra*>(data)) {
-                // todo: add more
-
-                return createNodeExt<CCMenuItemSpriteExtra*>(MISE_Data);
-            } 
-            
-
-            // todo: add more
-
-            return createNodeExt<CCNode*>(data);
+                return createNodeWithData<CCSprite*>(spriteData, considerChildren);
+            } else if (auto MISE_Data = typeinfo_cast<CCMenuItemSpriteExtra*>(data)) {
+                return createNodeWithData<CCMenuItemSpriteExtra*>(MISE_Data, considerChildren);
+            } else return createNodeWithData<CCNode*>(data, considerChildren);
         }
 
-        inline NodeData getDataExt(CCNode* node) {
+        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true) {
             if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
-                // todo: add more
-
-                return getDataExt<CCSprite*>(sprite);
-            } 
-
-            if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
-                // todo: add more
-
-                return getDataExt<CCMenuItemSpriteExtra*>(menuItemSpriteExtra);
-            } 
-            
-
-            // todo: add more
-
-            return getDataExt<CCNode*>(node);
+                return getNodeData<CCSprite*>(sprite, considerChildren);
+            } else if (auto MISE = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+                return getNodeData<CCMenuItemSpriteExtra*>(MISE, considerChildren);
+            } else return getNodeData<CCNode*>(node, considerChildren);
         }
 
         inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
-            
+            return createNodeExt(getDataExt(node, considerChildren), considerChildren);
         }
 
     }
