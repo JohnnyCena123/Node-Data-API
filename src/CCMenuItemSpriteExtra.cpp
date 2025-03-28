@@ -16,7 +16,7 @@ CCMenuItemSpriteExtra* NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExt
     ret->setColor(data.m_color);
     ret->setOpacity(data.m_opacity);
 
-    auto callback = CallbackObject::create(data.m_callback);
+    auto callback = NodeDataAPI::callbacks::CallbackObject::create(data.m_callback);
     ret->setUserObject("callback-data"_spr, callback);
 
     return ret; 
@@ -26,12 +26,12 @@ template <>
 NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*> NodeDataAPI::getUniqueNodeData<CCMenuItemSpriteExtra*>(CCMenuItemSpriteExtra* node) {
     NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*> ret;
 
-    ret.m_sprite = getDataExt(node->getNormalImage());
+    ret.m_sprite = NodeDataAPI::utils::getDataExt(node->getNormalImage());
 
     ret.m_color = node->getColor();
     ret.m_opacity = node->getOpacity();
 
-    auto callbackObject = static_cast<CallbackObject*>(node->getUserObject("callback-data"_spr));
+    auto callbackObject = static_cast<NodeDataAPI::callbacks::CallbackObject*>(node->getUserObject("callback-data"_spr));
     if (callbackObject) ret.m_callback = callbackObject->m_data;
 
     return ret;

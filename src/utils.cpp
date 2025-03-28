@@ -24,10 +24,10 @@ CCNode* NodeDataAPI::utils::getNodeByUniqueID(std::string ID) {
 
 CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNode*> data) {
     if (auto spriteData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(&data)) {
-        return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(*spriteData, considerChildren);
+        return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(*spriteData);
     } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>*>(&data)) {
-        return NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(*menuItemSpriteExtraData, considerChildren);
-    } else return NodeDataAPI::createNodeWithUniqueData<NodeDataAPI::NodeData<CCNode*>>(data, considerChildren);
+        return NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(*menuItemSpriteExtraData);
+    } else return NodeDataAPI::createNodeWithUniqueData<NodeDataAPI::NodeData<CCNode*>>(data);
 }
 
 CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*> data, bool considerChildren) {
@@ -41,10 +41,10 @@ CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*> data, b
 
 NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::utils::getUniqueDataExt(CCNode* node) {
     if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
-        return NodeDataAPI::getUniqueNodeData<CCSprite*>(sprite, considerChildren);
+        return NodeDataAPI::getUniqueNodeData<CCSprite*>(sprite);
     } else if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
-        return NodeDataAPI::getUniqueNodeData<CCMenuItemSpriteExtra*>(menuItemSpriteExtra, considerChildren);
-    } else return NodeDataAPI::getUniqueNodeData<CCNode*>(node, considerChildren);
+        return NodeDataAPI::getUniqueNodeData<CCMenuItemSpriteExtra*>(menuItemSpriteExtra);
+    } else return NodeDataAPI::getUniqueNodeData<CCNode*>(node);
 }
 
 NodeDataAPI::NodeData<CCNode*> NodeDataAPI::utils::getDataExt(CCNode* node, bool considerChildren) {
@@ -56,6 +56,6 @@ NodeDataAPI::NodeData<CCNode*> NodeDataAPI::utils::getDataExt(CCNode* node, bool
 }
 
 
-CCNode* NodeDataAPI::utils::cloneNodeExt(CCNode* node, bool considerChildren = true) {
+CCNode* NodeDataAPI::utils::cloneNodeExt(CCNode* node, bool considerChildren) {
     return NodeDataAPI::utils::createNodeExt(NodeDataAPI::utils::getDataExt(node, considerChildren), considerChildren);
 }

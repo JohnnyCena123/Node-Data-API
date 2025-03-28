@@ -57,7 +57,7 @@ namespace NodeDataAPI {
         if (data.m_layout) {
             if (considerChildren) {
                 for (auto childData : data.m_children) {
-                    ret->addChild(createNodeExt(childData));
+                    ret->addChild(utils::createNodeExt(childData));
                 }
             }
 

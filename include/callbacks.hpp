@@ -16,8 +16,8 @@ namespace NodeDataAPI::callbacks {
     };
 
     class CallbackHandler : public CCObject {
-        static CallbackHandler* create();
     public:
+        static CallbackHandler* create();
         static CallbackHandler* s_callbackHandler;
         void onCallback(CCObject* sender);
 
