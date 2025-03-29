@@ -12,6 +12,33 @@ using namespace geode::prelude;
 
 namespace NodeDataAPI {
 
+    // utils
+
+    namespace utils {
+
+        // Des = Descendant
+        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
+        inline CCNode* getNodeByUniqueID(std::string ID) {return getDesByUniqueID(ID, CCScene::get());}
+
+        CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data);
+        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
+
+        UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node);
+        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
+
+
+        template <class NodeSubclass>
+        inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
+            return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
+        }
+
+        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
+            return createNodeExt(getDataExt(node, considerChildren), considerChildren);
+        }
+
+    }
+    
+
     
     // base
 
@@ -228,31 +255,5 @@ namespace NodeDataAPI {
     UniqueNodeData<CCSprite*> getUniqueNodeData<CCSprite*>(CCSprite* node);
 
 
-
-    // utils
-
-    namespace utils {
-
-        // Des = Descendant
-        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
-        inline CCNode* getNodeByUniqueID(std::string ID) {return getDesByUniqueID(ID, CCScene::get());}
-
-        CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data);
-        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
-
-        UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node);
-        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
-
-
-        template <class NodeSubclass>
-        inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
-            return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
-        }
-
-        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren) {
-            return createNodeExt(getDataExt(node, considerChildren), considerChildren);
-        }
-
-    }
     
 }
