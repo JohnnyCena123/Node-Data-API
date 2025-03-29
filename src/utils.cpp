@@ -22,10 +22,6 @@ CCNode* NodeDataAPI::utils::getDesByUniqueID(std::string ID, CCNode* node) {
     return nullptr;
 }
 
-CCNode* NodeDataAPI::utils::getNodeByUniqueID(std::string ID) {
-    return getDesByUniqueID(ID, CCScene::get());
-}
-
 
 CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNode*> data) {
     if (auto spriteData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(&data)) {
@@ -61,6 +57,4 @@ NodeDataAPI::NodeData<CCNode*> NodeDataAPI::utils::getDataExt(CCNode* node, bool
 }
 
 
-CCNode* NodeDataAPI::utils::cloneNodeExt(CCNode* node, bool considerChildren) {
-    return NodeDataAPI::utils::createNodeExt(NodeDataAPI::utils::getDataExt(node, considerChildren), considerChildren);
-}
+

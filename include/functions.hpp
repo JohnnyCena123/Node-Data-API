@@ -12,22 +12,6 @@ using namespace geode::prelude;
 
 namespace NodeDataAPI {
 
-    namespace utils {
-
-        // Des = Descendant
-        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
-        inline CCNode* getNodeByUniqueID(std::string ID);
-
-        inline CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data);
-        inline CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
-
-        inline UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node);
-        inline NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
-
-        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true);
-
-    }
-
     
     // base
 
@@ -157,8 +141,8 @@ namespace NodeDataAPI {
         ret.m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
 
         if (considerChildren) {
-            for (NodeSubclass child : CCArrayExt<NodeSubclass>(node->getChildren())) {  
-                ret.m_children.push_back(getNodeData(child)); 
+            for (auto child : CCArrayExt<CCNode*>(node->getChildren())) {  
+                ret.m_children.push_back(getDataExt(child)); 
             }
         }
         if (auto layout = node->getLayout()) {
@@ -227,11 +211,6 @@ namespace NodeDataAPI {
         return ret;
     }
 
-    template <class NodeSubclass>
-    inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
-        return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
-    }
-
     // CCNode 
 
     template <>
@@ -247,5 +226,33 @@ namespace NodeDataAPI {
 
     template <>
     UniqueNodeData<CCSprite*> getUniqueNodeData<CCSprite*>(CCSprite* node);
+
+
+
+    // utils
+
+    namespace utils {
+
+        // Des = Descendant
+        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
+        inline CCNode* getNodeByUniqueID(std::string ID) {return getDesByUniqueID(ID, CCScene::get());}
+
+        CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data);
+        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
+
+        UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node);
+        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
+
+
+        template <class NodeSubclass>
+        inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
+            return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
+        }
+
+        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren) {
+            return createNodeExt(getDataExt(node, considerChildren), considerChildren);
+        }
+
+    }
     
 }
