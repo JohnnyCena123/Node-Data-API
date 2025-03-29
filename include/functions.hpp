@@ -37,7 +37,7 @@ namespace NodeDataAPI {
         }
 
     }
-    
+
 
     
     // base
@@ -169,7 +169,7 @@ namespace NodeDataAPI {
 
         if (considerChildren) {
             for (auto child : CCArrayExt<CCNode*>(node->getChildren())) {  
-                ret.m_children.push_back(getDataExt(child)); 
+                ret.m_children.push_back(utils::getDataExt(child)); 
             }
         }
         if (auto layout = node->getLayout()) {
