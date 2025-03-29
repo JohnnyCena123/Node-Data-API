@@ -238,6 +238,7 @@ namespace NodeDataAPI {
         return ret;
     }
 
+
     // CCNode 
 
     template <>
@@ -245,6 +246,7 @@ namespace NodeDataAPI {
 
     template <>
     UniqueNodeData<CCNode*> getUniqueNodeData<CCNode*>(CCNode* node);
+
 
     // CCSprite
 
@@ -254,6 +256,7 @@ namespace NodeDataAPI {
     template <>
     UniqueNodeData<CCSprite*> getUniqueNodeData<CCSprite*>(CCSprite* node);
 
+    
     // CCMenuItemSpriteExtra
 
     template <>

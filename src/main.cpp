@@ -37,7 +37,6 @@ class $modify(MyMenuLayer, MenuLayer) {
         if (!MenuLayer::init()) return false;
 
         m_fields->m_cloneTitleSelector = schedule_selector(MyMenuLayer::cloneTitle);
-
         CCScheduler::get()->scheduleSelector(m_fields->m_cloneTitleSelector, this, .1f, 100, 0.f, false);
             
 
@@ -51,15 +50,18 @@ class $modify(MyMenuLayer, MenuLayer) {
     }
 
     void cloneTitle(float param) {
-        auto spr = NodeDataAPI::utils::cloneNodeExt(this->getChildByID("main-title"));
+        auto spr = NodeDataAPI::utils::cloneNodeExt(static_cast<CCSprite*>(this->getChildByID("main-title")));
         this->addChild(spr);
-        spr->runAction(CCEaseBounceOut::create(CCMoveBy::create(5.f, ccp(0, -150))));
-        spr->runAction(CCMoveBy::create(5.f, ccp(-500, 0)));
-        spr->runAction(CCEaseExponentialOut::create(CCFadeOut::create(7.f)));
+        spr->runAction(CCEaseBounceOut::create(CCMoveBy::create(10.f, ccp(0, -150))));
+        spr->runAction(CCMoveBy::create(10.f, ccp(-500, 0)));
+        spr->runAction(CCSequence::create(
+            CCEaseExponentialOut::create(CCFadeOut::create(10.f)), 
+            CCRemoveSelf::create(true)
+        ));
     }
 
     void onTestException(CCObject* sender) {
-        auto test = NodeDataAPI::getUniqueNodeData<CCMenuItemSpriteExtra*>(static_cast<CCMenuItemSpriteExtra*>(sender));
+        auto test = NodeDataAPI::getUniqueNodeData<CCTextInputNode*>(CCTextInputNode::create(69.f, 420.f, "skibid", "gjFont24.fnt"));
     }
 
     void onPlay(CCObject* sender) {
