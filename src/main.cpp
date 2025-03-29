@@ -54,10 +54,11 @@ class $modify(MyMenuLayer, MenuLayer) {
         this->addChild(spr);
         spr->runAction(CCEaseBounceOut::create(CCMoveBy::create(10.f, ccp(0, -150))));
         spr->runAction(CCMoveBy::create(10.f, ccp(-500, 0)));
-        spr->runAction(CCSequence::create(
-            CCEaseExponentialOut::create(CCFadeOut::create(10.f)), 
-            CCRemoveSelf::create(true)
-        ));
+
+        auto actions = CCArray::create();
+        actions->addObject(CCEaseExponentialOut::create(CCFadeOut::create(10.f)));
+        actions->addObject(CCRemoveSelf::create(true));
+        spr->runAction(CCSequence::create(actions));
     }
 
     void onTestException(CCObject* sender) {
