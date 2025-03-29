@@ -254,6 +254,14 @@ namespace NodeDataAPI {
     template <>
     UniqueNodeData<CCSprite*> getUniqueNodeData<CCSprite*>(CCSprite* node);
 
+    // CCMenuItemSpriteExtra
+
+    template <>
+    CCMenuItemSpriteExtra* createNodeWithUniqueData<CCMenuItemSpriteExtra*>(UniqueNodeData<CCMenuItemSpriteExtra*> data);
+
+    template <>
+    UniqueNodeData<CCMenuItemSpriteExtra*> getUniqueNodeData<CCMenuItemSpriteExtra*>(CCMenuItemSpriteExtra* node);
+
 
     
 }
