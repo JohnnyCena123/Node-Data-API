@@ -12,6 +12,34 @@ using namespace geode::prelude;
 
 namespace NodeDataAPI {
 
+    // utils
+
+    namespace utils {
+
+        // Des = Descendant
+        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
+        inline CCNode* getNodeByUniqueID(std::string ID) {return getDesByUniqueID(ID, CCScene::get());}
+
+        CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data);
+        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
+
+        UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node);
+        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
+
+
+        template <class NodeSubclass>
+        inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
+            return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
+        }
+
+        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
+            return createNodeExt(getDataExt(node, considerChildren), considerChildren);
+        }
+
+    }
+
+
+    
     // base
 
     template <class NodeSubclass>
@@ -36,12 +64,12 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass> data, bool considerChildren = true) {
-        auto ret = createNodeWithUniqueData(data.m_uniqueData);
+        auto ret = utils::createNodeUniqueExt(data.m_uniqueData);
     
         if (data.m_layout) {
             if (considerChildren) {
                 for (auto childData : data.m_children) {
-                    ret->addChild(createNodeWithDataExt(childData));
+                    ret->addChild(utils::createNodeExt(childData));
                 }
             }
 
@@ -59,8 +87,7 @@ namespace NodeDataAPI {
                     ->setAutoGrowAxis(axisLayoutData->m_allowAndMinLength)
                     ->setDefaultScaleLimits(axisLayoutData->m_defaultScaleLimits.x, axisLayoutData->m_defaultScaleLimits.y)
                 );
-            } 
-            else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data.m_layout)) {
+            } else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data.m_layout)) {
                 ret->setLayout(AnchorLayout::create());
             }
 
@@ -84,8 +111,7 @@ namespace NodeDataAPI {
                     ->setScalePriority(axisLayoutOptionsData->m_scalePriority)
                     ->setCrossAxisAlignment(axisLayoutOptionsData->m_crossAxisAlignment)
                 );
-            } 
-            else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data.m_layoutOptions)) {
+            } else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data.m_layoutOptions)) {
                     ret->setLayoutOptions(AnchorLayoutOptions::create()
                     ->setAnchor(anchorLayoutOptionsData->m_anchor)
                     ->setOffset({anchorLayoutOptionsData->m_offset.x, anchorLayoutOptionsData->m_offset.y})
@@ -112,7 +138,7 @@ namespace NodeDataAPI {
         ret->setID(data.m_stringID);
         ret->setUserObject("unique-string-id"_spr, CCString::create(data.m_uniqueStringID));
 
-        return ret;
+        return static_cast<NodeSubclass>(ret);
     }
 
 
@@ -142,8 +168,8 @@ namespace NodeDataAPI {
         ret.m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
 
         if (considerChildren) {
-            for (NodeSubclass child : CCArrayExt<NodeSubclass>(node->getChildren())) {  
-                ret.m_children.push_back(getNodeData(child)); 
+            for (auto child : CCArrayExt<CCNode*>(node->getChildren())) {  
+                ret.m_children.push_back(utils::getDataExt(child)); 
             }
         }
         if (auto layout = node->getLayout()) {
@@ -162,8 +188,7 @@ namespace NodeDataAPI {
                 axisLayoutData->m_allowAndMinLength = axisLayout->getAutoGrowAxis();
                 axisLayoutData->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()};
                 ret.m_layout = axisLayoutData;  
-            } 
-            else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(layout)) {
+            } else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(layout)) {
                 ret.m_layout = new AnchorLayoutData();
             }   
 
@@ -184,8 +209,7 @@ namespace NodeDataAPI {
                 axisLayoutOptionsData->m_scalePriority = axisLayoutOptions->getScalePriority();
                 axisLayoutOptionsData->m_crossAxisAlignment = axisLayoutOptions->getCrossAxisAlignment();
                 ret.m_layoutOptions = axisLayoutOptionsData;
-            } 
-            else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(layoutOptions)) {
+            } else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(layoutOptions)) {
                 auto anchorLayoutOptionsData = new AnchorLayoutOptionsData();
                 anchorLayoutOptionsData->m_anchor = anchorLayoutOptions->getAnchor();
                 anchorLayoutOptionsData->m_offset = {anchorLayoutOptions->getOffset().x, anchorLayoutOptions->getOffset().y};
@@ -214,39 +238,6 @@ namespace NodeDataAPI {
         return ret;
     }
 
-    namespace utils {
-
-        // Des = Descendant
-        CCNode* getDesByUniqueID(std::string ID, CCNode* node);
-
-        inline CCNode* getNodeByUniqueID(std::string ID);
-
-        template <class NodeSubclass>
-        inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
-            return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
-        }
-
-        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true) {
-            if (auto spriteData = typeinfo_cast<NodeData<CCSprite*>>(data)) {
-                return createNodeWithData<CCSprite*>(spriteData, considerChildren);
-            } else if (auto MISE_Data = typeinfo_cast<NodeData<CCMenuItemSpriteExtra*>>(data)) {
-                return createNodeWithData<CCMenuItemSpriteExtra*>(MISE_Data, considerChildren);
-            } else return createNodeWithData<NodeData<CCNode*>>(data, considerChildren);
-        }
-
-        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true) {
-            if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
-                return getNodeData<CCSprite*>(sprite, considerChildren);
-            } else if (auto MISE = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
-                return getNodeData<CCMenuItemSpriteExtra*>(MISE, considerChildren);
-            } else return getNodeData<CCNode*>(node, considerChildren);
-        }
-
-        inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
-            return createNodeExt(getDataExt(node, considerChildren), considerChildren);
-        }
-
-    }
 
     // CCNode 
 
@@ -256,6 +247,7 @@ namespace NodeDataAPI {
     template <>
     UniqueNodeData<CCNode*> getUniqueNodeData<CCNode*>(CCNode* node);
 
+
     // CCSprite
 
     template <>
@@ -263,5 +255,16 @@ namespace NodeDataAPI {
 
     template <>
     UniqueNodeData<CCSprite*> getUniqueNodeData<CCSprite*>(CCSprite* node);
+
+    
+    // CCMenuItemSpriteExtra
+
+    template <>
+    CCMenuItemSpriteExtra* createNodeWithUniqueData<CCMenuItemSpriteExtra*>(UniqueNodeData<CCMenuItemSpriteExtra*> data);
+
+    template <>
+    UniqueNodeData<CCMenuItemSpriteExtra*> getUniqueNodeData<CCMenuItemSpriteExtra*>(CCMenuItemSpriteExtra* node);
+
+
     
 }
