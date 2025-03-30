@@ -27,11 +27,6 @@ namespace NodeDataAPI {
         NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
 
 
-        template <class NodeSubclass>
-        inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
-            return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren), considerChildren);
-        }
-
         inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
             return createNodeExt(getDataExt(node, considerChildren), considerChildren);
         }
@@ -237,6 +232,13 @@ namespace NodeDataAPI {
 
         return ret;
     }
+
+
+    template <class NodeSubclass>
+    inline NodeSubclass cloneNode(NodeSubclass node, bool considerChildren = true) {
+        return createNodeWithData<NodeSubclass>(getNodeData<NodeSubclass>(node, considerChildren));
+    }
+
 
 
     // CCNode 
