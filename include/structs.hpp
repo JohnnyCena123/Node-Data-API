@@ -124,7 +124,7 @@ namespace NodeDataAPI {
     }; 
 
     template <>
-    struct NodeData<CCNode*> {
+    struct NodeData<CCNode*> : public NodeData {
 
         UniqueNodeData<CCNode*> m_uniqueData;
 
