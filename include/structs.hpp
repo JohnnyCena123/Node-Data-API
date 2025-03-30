@@ -9,11 +9,11 @@ struct FloatPair {
 };
 
 #define DTOR_STRUCT(structName) struct structName {\
-    virtual ~##structName##() {\
+    virtual ~structName() {\
         if (Mod::get()->getSettingValue<bool>("logging-destructions-enabled")) log::debug("destructed {}!", #structName);\
     }
 #define DTOR_STRUCT_DERIVE(structName, baseStruct) struct structName : public baseStruct {\
-    virtual ~##structName##() {\
+    virtual ~structName() {\
         if (Mod::get()->getSettingValue<bool>("logging-destructions-enabled")) log::debug("destructed {}!", #structName);\
     }     
 #define STRUCT_END };
