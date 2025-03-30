@@ -14,7 +14,8 @@ void updateSavedLogLevels() {
 
     (void)Mod::get()->setSavedValue<bool>(
         "is-logging-level-debug", 
-        geodeLoader->getSettingValue<std::string>("console-logging-level") == "debug" || geodeLoader->getSettingValue<std::string>("file-logging-level") == "debug"
+        geodeLoader->getSettingValue<std::string>("console-logging-level") == "debug" 
+        || geodeLoader->getSettingValue<std::string>("file-logging-level") == "debug"
     );
 }
 
@@ -28,16 +29,11 @@ $execute {
 
 
 #include <Geode/modify/MenuLayer.hpp>
-class $modify(MyMenuLayer, MenuLayer) {
-
-    struct Fields {
-        SEL_SCHEDULE m_cloneTitleSelector;
-    };
+int $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
 
-        m_fields->m_cloneTitleSelector = schedule_selector(MyMenuLayer::cloneTitle);
-        CCScheduler::get()->scheduleSelector(m_fields->m_cloneTitleSelector, this, .1f, 100, 0.f, false);
+        CCScheduler::get()->scheduleSelector(schedule_selector(MyMenuLayer::cloneTitle), this, .1f, 100, 0.f, false);
             
 
         auto menu = this->getChildByID("bottom-menu");
@@ -52,7 +48,7 @@ class $modify(MyMenuLayer, MenuLayer) {
     void cloneTitle(float param) {
         auto spr = NodeDataAPI::cloneNode<CCSprite*>(static_cast<CCSprite*>(this->getChildByID("main-title")), true);
         this->addChild(spr);
-        spr->runAction(CCEaseBounceOut::create(CCMoveBy::create(10.f, ccp(0, -150))));
+        spr->runAction(CCEaseBounceOut::create(CCMoveBy::create(10.f, ccp(0, -250))));
         spr->runAction(CCMoveBy::create(10.f, ccp(-500, 0)));
 
         spr->runAction(
@@ -64,21 +60,21 @@ class $modify(MyMenuLayer, MenuLayer) {
     }
 
     void onTestException(CCObject* sender) {
-        auto test = NodeDataAPI::getUniqueNodeData<CCTextInputNode*>(CCTextInputNode::create(69.f, 420.f, "skibid", "gjFont24.fnt"));
+        auto test = NodeDataAPI::getUniqueNodeData<CCTextInputNode*>(CCTextInputNode::create(69.f, 420.f, "skibidi", "gjFont24.fnt"));
     }
 
     void onPlay(CCObject* sender) {
         MenuLayer::onPlay(sender);
-        CCScheduler::get()->unscheduleSelector(m_fields->m_cloneTitleSelector, this);
+        CCScheduler::get()->unscheduleSelector(schedule_selector(MyMenuLayer::cloneTitle), this);
     }
 
     void onCreator(CCObject* sender) {
         MenuLayer::onCreator(sender);
-        CCScheduler::get()->unscheduleSelector(m_fields->m_cloneTitleSelector, this);
+        CCScheduler::get()->unscheduleSelector(schedule_selector(MyMenuLayer::cloneTitle), this);
     }
 
     void onGarage(CCObject* sender) {
         MenuLayer::onGarage(sender);
-        CCScheduler::get()->unscheduleSelector(m_fields->m_cloneTitleSelector, this);
+        CCScheduler::get()->unscheduleSelector(schedule_selector(MyMenuLayer::cloneTitle), this);
     }
 };

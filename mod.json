@@ -17,7 +17,7 @@
 			"type": "bool",
 			"default": false,
 			"description": "ignore this if you're not a developer.",
-			"enable-if": "saved:is-console-logging-debug && saved:is-file-logging-debug ",
+			"enable-if": "saved:is-logging-level-debug",
 			"enable-if-description": "Enable the Debug log level in either the Console or the File settings!"
 		}
 	}

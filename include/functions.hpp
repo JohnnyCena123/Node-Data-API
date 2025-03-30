@@ -59,7 +59,7 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass> data, bool considerChildren = true) {
-        auto ret = createNodeWithUniqueData<NodeSubclass>(reinterpret_cast<UniqueNodeData<NodeSubclass>>(data.m_uniqueData));
+        auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>>(data.m_uniqueData));
     
         if (data.m_layout) {
             if (considerChildren) {
