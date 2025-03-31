@@ -58,10 +58,10 @@ namespace NodeDataAPI {
     }
 
     template <class NodeSubclass>
-    NodeSubclass createNodeWithData(NodeData<NodeSubclass> data, bool considerChildren = true) {
+    NodeSubclass createNodeWithData(NodeData<NodeSubclass>* data, bool considerChildren = true) {
         auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>*>(data.m_uniqueData));
     
-        if (data.m_layout) {
+        if (data->m_layout) {
             if (considerChildren) {
                 for (auto childData : data.m_children) {
                     ret->addChild(utils::createNodeExt(childData));
@@ -82,7 +82,7 @@ namespace NodeDataAPI {
                     ->setAutoGrowAxis(axisLayoutData->m_allowAndMinLength)
                     ->setDefaultScaleLimits(axisLayoutData->m_defaultScaleLimits.x, axisLayoutData->m_defaultScaleLimits.y)
                 );
-            } else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data.m_layout)) {
+            } else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data->m_layout)) {
                 ret->setLayout(AnchorLayout::create());
             }
 
@@ -90,7 +90,7 @@ namespace NodeDataAPI {
         }
 
         if (data.m_layoutOptions) {
-            if (auto axisLayoutOptionsData = typeinfo_cast<AxisLayoutOptionsData*>(data.m_layoutOptions)) {
+            if (auto axisLayoutOptionsData = typeinfo_cast<AxisLayoutOptionsData*>(data->m_layoutOptions)) {
                 ret->setLayoutOptions(AxisLayoutOptions::create()
                     ->setAutoScale(axisLayoutOptionsData->m_autoScale)
                     ->setScaleLimits(
@@ -106,7 +106,7 @@ namespace NodeDataAPI {
                     ->setScalePriority(axisLayoutOptionsData->m_scalePriority)
                     ->setCrossAxisAlignment(axisLayoutOptionsData->m_crossAxisAlignment)
                 );
-            } else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data.m_layoutOptions)) {
+            } else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data->m_layoutOptions)) {
                     ret->setLayoutOptions(AnchorLayoutOptions::create()
                     ->setAnchor(anchorLayoutOptionsData->m_anchor)
                     ->setOffset({anchorLayoutOptionsData->m_offset.x, anchorLayoutOptionsData->m_offset.y})
@@ -114,26 +114,26 @@ namespace NodeDataAPI {
             }
         }
 
-        ret->setPosition({data.m_position.x, data.m_position.y});
-        ret->setAnchorPoint({data.m_anchorPoint.x, data.m_anchorPoint.y});
-        ret->setScaleX(data.m_scale.x); ret->setScaleY(data.m_scale.y);
-        ret->setContentSize({data.m_contentSize.x, data.m_contentSize.y});
-        ret->setRotationX(data.m_rotation.x); ret->setRotationY(data.m_rotation.y);
-        ret->setSkewX(data.m_skew.x); ret->setSkewY(data.m_skew.y);
+        ret->setPosition({data->m_position.x, data->m_position.y});
+        ret->setAnchorPoint({data->m_anchorPoint.x, data->m_anchorPoint.y});
+        ret->setScaleX(data->m_scale.x); ret->setScaleY(data->m_scale.y);
+        ret->setContentSize({data->m_contentSize.x, data->m_contentSize.y});
+        ret->setRotationX(data->m_rotation.x); ret->setRotationY(data->m_rotation.y);
+        ret->setSkewX(data->m_skew.x); ret->setSkewY(data->m_skew.y);
 
-        ret->setZOrder(data.m_zOrder);
-        ret->setTag(data.m_tag);
+        ret->setZOrder(data->m_zOrder);
+        ret->setTag(data->m_tag);
 
-        ret->setVisible(data.m_isVisible);
+        ret->setVisible(data->m_isVisible);
 
-        ret->ignoreAnchorPointForPosition(data.m_ignoreAnchorPointForPosition);
+        ret->ignoreAnchorPointForPosition(data->m_ignoreAnchorPointForPosition);
     
         ret->updateLayout();
 
-        ret->setID(data.m_stringID);
-        ret->setUserObject("unique-string-id"_spr, CCString::create(data.m_uniqueStringID));
+        ret->setID(data->m_stringID);
+        ret->setUserObject("unique-string-id"_spr, CCString::create(data->m_uniqueStringID));
 
-        return static_cast<NodeSubclass>(ret);
+        return ret;
     }
 
 
@@ -158,13 +158,13 @@ namespace NodeDataAPI {
     }
 
     template <class NodeSubclass>
-    NodeData<NodeSubclass> getNodeData(NodeSubclass node, bool considerChildren = true) {
+    NodeData<NodeSubclass>* getNodeData(NodeSubclass node, bool considerChildren = true) {
         NodeData<NodeSubclass> ret;
-        ret.m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
+        ret->m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
 
         if (considerChildren) {
             for (auto child : CCArrayExt<CCNode*>(node->getChildren())) {  
-                ret.m_children.push_back(utils::getDataExt(child)); 
+                ret->m_children.push_back(utils::getDataExt(child)); 
             }
         }
         if (auto layout = node->getLayout()) {
@@ -182,12 +182,12 @@ namespace NodeDataAPI {
                 axisLayoutData->m_crossAxisOverflow = axisLayout->getCrossAxisOverflow();
                 axisLayoutData->m_allowAndMinLength = axisLayout->getAutoGrowAxis();
                 axisLayoutData->m_defaultScaleLimits = {axisLayout->getDefaultMinScale(), axisLayout->getDefaultMaxScale()};
-                ret.m_layout = axisLayoutData;  
+                ret->m_layout = axisLayoutData;  
             } else if (auto anchorLayout = typeinfo_cast<AnchorLayout*>(layout)) {
-                ret.m_layout = new AnchorLayoutData();
+                ret->m_layout = new AnchorLayoutData();
             }   
 
-            ret.m_layout->m_isIgnoreInvisibleChildren = layout->isIgnoreInvisibleChildren();
+            ret->m_layout->m_isIgnoreInvisibleChildren = layout->isIgnoreInvisibleChildren();
         }
 
         if (auto layoutOptions = node->getLayoutOptions()) {
@@ -203,32 +203,32 @@ namespace NodeDataAPI {
                 axisLayoutOptionsData->m_sameLine = axisLayoutOptions->getSameLine();
                 axisLayoutOptionsData->m_scalePriority = axisLayoutOptions->getScalePriority();
                 axisLayoutOptionsData->m_crossAxisAlignment = axisLayoutOptions->getCrossAxisAlignment();
-                ret.m_layoutOptions = axisLayoutOptionsData;
+                ret->m_layoutOptions = axisLayoutOptionsData;
             } else if (auto anchorLayoutOptions = typeinfo_cast<AnchorLayoutOptions*>(layoutOptions)) {
                 auto anchorLayoutOptionsData = new AnchorLayoutOptionsData();
                 anchorLayoutOptionsData->m_anchor = anchorLayoutOptions->getAnchor();
                 anchorLayoutOptionsData->m_offset = {anchorLayoutOptions->getOffset().x, anchorLayoutOptions->getOffset().y};
-                ret.m_layoutOptions = anchorLayoutOptionsData;
+                ret->m_layoutOptions = anchorLayoutOptionsData;
             }
         }
 
-        ret.m_position = {node->getPositionX(), node->getPositionY()};
-        ret.m_anchorPoint = {node->getAnchorPoint().x, node->getAnchorPoint().y};
-        ret.m_scale = {node->getScaleX(), node->getScaleY()};
-        ret.m_contentSize = {node->getContentWidth(), node->getContentHeight()};
-        ret.m_rotation = {node->getRotationX(), node->getRotationY()};
-        ret.m_skew = {node->getSkewX(), node->getSkewY()};
+        ret->m_position = {node->getPositionX(), node->getPositionY()};
+        ret->m_anchorPoint = {node->getAnchorPoint().x, node->getAnchorPoint().y};
+        ret->m_scale = {node->getScaleX(), node->getScaleY()};
+        ret->m_contentSize = {node->getContentWidth(), node->getContentHeight()};
+        ret->m_rotation = {node->getRotationX(), node->getRotationY()};
+        ret->m_skew = {node->getSkewX(), node->getSkewY()};
 
-        ret.m_zOrder = node->getZOrder();
-        ret.m_tag = node->getTag();
+        ret->m_zOrder = node->getZOrder();
+        ret->m_tag = node->getTag();
 
-        ret.m_isVisible = node->isVisible();
+        ret->m_isVisible = node->isVisible();
 
-        ret.m_ignoreAnchorPointForPosition = node->isIgnoreAnchorPointForPosition();
+        ret->m_ignoreAnchorPointForPosition = node->isIgnoreAnchorPointForPosition();
 
-        ret.m_stringID = node->getID();
+        ret->m_stringID = node->getID();
         auto uniqueStringID = static_cast<CCString*>(node->getUserObject("unique-string-id"_spr));
-        ret.m_uniqueStringID = uniqueStringID ? uniqueStringID->getCString() : "";
+        ret->m_uniqueStringID = uniqueStringID ? uniqueStringID->getCString() : "";
 
         return ret;
     }

@@ -32,7 +32,7 @@ $execute {
 int $modify(MyMenuLayer, MenuLayer) {
 
     struct Fields {
-        static int n = 1;
+        static int n;
     };
 
     bool init() {
@@ -48,8 +48,8 @@ int $modify(MyMenuLayer, MenuLayer) {
 
 
 
-        NodeDataAPI::NodeData<CCSprite*> child1;
-        NodeDataAPI::NodeData<CCSprite*> child2;
+        auto child1 = new NodeDataAPI::NodeData<CCSprite*>();
+        auto child2 = NodeDataAPI::NodeData<CCSprite*>();
 
         auto child1UniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
         auto child2UniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
@@ -89,20 +89,20 @@ int $modify(MyMenuLayer, MenuLayer) {
         child1UniqueData->m_opacity = -16*Fields::n % 256;
         child2UniqueData->m_opacity = -12*Fields::n % 256;
 
-        child1.m_skew = {6.f, -9.f};
-        child2.m_rotation = {-9.f, 6.f};      
+        child1->m_skew = {6.f, -9.f};
+        child2->m_rotation = {-9.f, 6.f};      
 
-        child1.m_scale = {.15f, .15f};
-        child2.m_scale = {.15f, .15f};
+        child1->m_scale = {.15f, .15f};
+        child2->m_scale = {.15f, .15f};
 
 
-        NodeDataAPI::NodeData<CCSprite*> sprData;
+        auto sprData = new NodeDataAPI::NodeData<CCSprite*>();
         
-        sprData.m_children.push_back(child1);
-        sprData.m_children.push_back(child2);
+        sprData->m_children.push_back(child1);
+        sprData->m_children.push_back(child2);
 
 
-        sprData.m_layout = new NodeDataAPI::AnchorLayoutData();
+        sprData->m_layout = new NodeDataAPI::AnchorLayoutData();
 
         auto sprUniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
         sprUniqueData->m_spriteName = "GJ_chatBtn_001.png";
@@ -113,13 +113,19 @@ int $modify(MyMenuLayer, MenuLayer) {
             -17*Fields::n % 256 + rand() % 29
         );
         sprUniqueData->m_opacity = -19*Fields::n % 256;
-        sprData.m_uniqueData = sprUniqueData;
+        sprData->m_uniqueData = sprUniqueData;
 
-        NodeDataAPI::NodeData<CCMenuItemSpriteExtra*> data;
+        auto data = new NodeDataAPI::NodeData<CCMenuItemSpriteExtra*>();
 
-        data.m_sprite = &sprData;
+        auto uniqueData = new NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>;
+
+        uniqueData->m_sprite = &sprData;
         
-        data.m_callback = {3.f, {-4.f, 13.f}, 4.5f};
+        uniqueData->m_callback = {3.f, {-4.f, 13.f}, 4.5f};
+
+
+
+        menu->addChild(NodeDataAPI::createNodeWithData(data));
 
         menu->updateLayout();
 
@@ -153,3 +159,5 @@ int $modify(MyMenuLayer, MenuLayer) {
         );
     }
 };
+
+MyMenuLayer::Fields::n = 1;

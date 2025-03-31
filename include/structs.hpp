@@ -83,7 +83,7 @@ namespace NodeDataAPI {
 
         UniqueNodeData<NodeSubclass>* m_uniqueData;
 
-        std::vector<NodeData> m_children;
+        std::vector<NodeData*> m_children;
 
         LayoutData* m_layout = nullptr;
         LayoutOptionsData* m_layoutOptions = nullptr;
@@ -112,33 +112,33 @@ namespace NodeDataAPI {
     template <>
     DTOR_STRUCT(UniqueNodeData<CCNode*>) STRUCT_END 
 
-    // template <>
-    // DTOR_STRUCT(NodeData<CCNode*>)
+    template <>
+    DTOR_STRUCT(NodeData<CCNode*>)
 
-    //     UniqueNodeData<CCNode*>* m_uniqueData;
+        UniqueNodeData<CCNode*>* m_uniqueData;
 
-    //     std::vector<NodeData<CCNode*>> m_children;
+        std::vector<NodeData<CCNode*>*> m_children;
 
-    //     LayoutData* m_layout = nullptr;
-    //     LayoutOptionsData* m_layoutOptions = nullptr;
+        LayoutData* m_layout = nullptr;
+        LayoutOptionsData* m_layoutOptions = nullptr;
 
-    //     FloatPair m_position;
-    //     FloatPair m_anchorPoint = {.5f, .5f};
-    //     FloatPair m_scale = {1.f, 1.f};
-    //     FloatPair m_contentSize;
-    //     FloatPair m_rotation;
-    //     FloatPair m_skew;
+        FloatPair m_position;
+        FloatPair m_anchorPoint = {.5f, .5f};
+        FloatPair m_scale = {1.f, 1.f};
+        FloatPair m_contentSize;
+        FloatPair m_rotation;
+        FloatPair m_skew;
 
-    //     int m_zOrder;
-    //     int m_tag;
+        int m_zOrder;
+        int m_tag;
 
-    //     bool m_isVisible = true;
+        bool m_isVisible = true;
 
-    //     bool m_ignoreAnchorPointForPosition;
+        bool m_ignoreAnchorPointForPosition;
 
-    //     std::string m_stringID;
-    //     std::string m_uniqueStringID;
-    // };
+        std::string m_stringID;
+        std::string m_uniqueStringID;
+    STRUCT_END
     
 
     // CCSprite
