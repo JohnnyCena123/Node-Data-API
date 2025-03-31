@@ -59,16 +59,16 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass>* data, bool considerChildren = true) {
-        auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>*>(data.m_uniqueData));
+        auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>*>(data->m_uniqueData));
     
         if (data->m_layout) {
             if (considerChildren) {
-                for (auto childData : data.m_children) {
+                for (auto childData : data->m_children) {
                     ret->addChild(utils::createNodeExt(childData));
                 }
             }
 
-            if (auto axisLayoutData = typeinfo_cast<AxisLayoutData*>(data.m_layout)) {
+            if (auto axisLayoutData = typeinfo_cast<AxisLayoutData*>(data->m_layout)) {
                 ret->setLayout(AxisLayout::create(axisLayoutData->m_axis)
                     ->setAxisAlignment(axisLayoutData->m_axisAlignment)
                     ->setCrossAxisAlignment(axisLayoutData->m_crossAxisAlignment)
@@ -86,10 +86,10 @@ namespace NodeDataAPI {
                 ret->setLayout(AnchorLayout::create());
             }
 
-            ret->getLayout()->ignoreInvisibleChildren(data.m_layout->m_isIgnoreInvisibleChildren);
+            ret->getLayout()->ignoreInvisibleChildren(data->m_layout->m_isIgnoreInvisibleChildren);
         }
 
-        if (data.m_layoutOptions) {
+        if (data->m_layoutOptions) {
             if (auto axisLayoutOptionsData = typeinfo_cast<AxisLayoutOptionsData*>(data->m_layoutOptions)) {
                 ret->setLayoutOptions(AxisLayoutOptions::create()
                     ->setAutoScale(axisLayoutOptionsData->m_autoScale)
@@ -159,7 +159,7 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeData<NodeSubclass>* getNodeData(NodeSubclass node, bool considerChildren = true) {
-        NodeData<NodeSubclass> ret;
+        auto ret = new NodeData<NodeSubclass>();
         ret->m_uniqueData = getUniqueNodeData<NodeSubclass>(node);
 
         if (considerChildren) {
