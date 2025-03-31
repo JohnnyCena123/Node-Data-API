@@ -11,7 +11,7 @@ using namespace geode::prelude;
         if (Mod::get()->getSettingValue<bool>("logging-destructions-enabled")) log::debug("destructed {}!", #className);\
     }
 
-#define DTOR_CLASS_DERIVE(className) class className {\
+#define DTOR_CLASS_DERIVE(className, baseClass) class className : public baseClass {\
     virtual ~className() {\
         if (Mod::get()->getSettingValue<bool>("logging-destructions-enabled")) log::debug("destructed {}!", #className);\
     }
@@ -19,13 +19,13 @@ using namespace geode::prelude;
 
 namespace NodeDataAPI::callbacks {
 
-    DTOR_CLASS_DERIVE(CallbackObject, public CCObject)
+    DTOR_CLASS_DERIVE(CallbackObject, CCObject)
     public:
         CallbackData m_data;
         static CallbackObject* create(CallbackData data);
     CLASS_END
 
-    DTOR_CLASS_DERIVE(CallbackHandler, public CCObject)
+    DTOR_CLASS_DERIVE(CallbackHandler, CCObject)
     public:
         static CallbackHandler* create();
         static CallbackHandler* s_callbackHandler;

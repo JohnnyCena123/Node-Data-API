@@ -181,8 +181,7 @@ namespace NodeDataAPI {
         ccColor3B m_color;
         GLubyte m_opacity;
 
-        CallbackData m_callback;
-
+        callbacks::CallbackData m_callback;
     STRUCT_END
 
     template <>

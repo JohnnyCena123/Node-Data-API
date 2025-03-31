@@ -5,11 +5,11 @@
 using namespace geode::prelude;
 
 template <>
-CCNode* NodeDataAPI::createNodeWithUniqueData<CCNode*>(NodeDataAPI::UniqueNodeData<CCNode*> data) {
+CCNode* NodeDataAPI::createNodeWithUniqueData<CCNode*>(NodeDataAPI::UniqueNodeData<CCNode*>* data) {
     return CCNode::create(); 
 }
 
 template <>
-NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::getUniqueNodeData<CCNode*>(CCNode* node) {
+NodeDataAPI::UniqueNodeData<CCNode*>* NodeDataAPI::getUniqueNodeData<CCNode*>(CCNode* node) {
     return {/* :3 */};
 }
