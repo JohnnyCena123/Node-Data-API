@@ -38,7 +38,7 @@ namespace NodeDataAPI {
     // base
 
     template <class NodeSubclass>
-    NodeSubclass createNodeWithUniqueData(UniqueNodeData<NodeSubclass> uniqueData) {
+    NodeSubclass createNodeWithUniqueData(UniqueNodeData<NodeSubclass>* uniqueData) {
         char* className;
         #ifdef GEODE_IS_WINDOWS
         className = const_cast<char*>(typeid(uniqueData).name() + 7);

@@ -6,7 +6,7 @@
 using namespace geode::prelude;
 
 template <>
-CCMenuItemSpriteExtra* NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*> data) {
+CCMenuItemSpriteExtra* NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>* data) {
     auto spr = NodeDataAPI::utils::createNodeExt(data->m_sprite, true);
     auto ret = CCMenuItemSpriteExtra::create(
         spr, NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler, 
@@ -23,7 +23,7 @@ CCMenuItemSpriteExtra* NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExt
 }
 
 template <>
-NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*> NodeDataAPI::getUniqueNodeData<CCMenuItemSpriteExtra*>(CCMenuItemSpriteExtra* node) {
+NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>* NodeDataAPI::getUniqueNodeData<CCMenuItemSpriteExtra*>(CCMenuItemSpriteExtra* node) {
     auto ret = new NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>();
 
     ret->m_sprite = NodeDataAPI::utils::getDataExt(node->getNormalImage(), true);
