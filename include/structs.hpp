@@ -25,7 +25,7 @@ namespace NodeDataAPI {
 
     DTOR_STRUCT(LayoutData)
         bool m_isIgnoreInvisibleChildren;
-    };
+    STRUCT_END
 
     DTOR_STRUCT_DERIVE(AxisLayoutData, LayoutData)
         Axis m_axis;
@@ -81,7 +81,7 @@ namespace NodeDataAPI {
     template <class NodeSubclass>
     DTOR_STRUCT(NodeData) 
 
-        UniqueNodeData<NodeSubclass> m_uniqueData;
+        UniqueNodeData<NodeSubclass>* m_uniqueData;
 
         std::vector<NodeData> m_children;
 
@@ -115,7 +115,7 @@ namespace NodeDataAPI {
     // template <>
     // DTOR_STRUCT(NodeData<CCNode*>)
 
-    //     UniqueNodeData<CCNode*> m_uniqueData;
+    //     UniqueNodeData<CCNode*>* m_uniqueData;
 
     //     std::vector<NodeData<CCNode*>> m_children;
 
@@ -161,12 +161,15 @@ namespace NodeDataAPI {
 
 
     // callbacks
+    namespace callbacks {
 
-    struct CallbackData { 
-        float m_time;
-        FloatPair m_skewTo; // currently the only callback possible is skewing the button, but its just a placeholder so more options are coming soon
-        float m_easingRate;
-    };
+        struct CallbackData { 
+            float m_time;
+            FloatPair m_skewTo; // currently the only callback possible is skewing the button, but its just a placeholder so more options are coming soon
+            float m_easingRate;
+        };
+
+    }
     
 
     // CCMenuItemSpriteExtra

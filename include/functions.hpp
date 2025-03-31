@@ -20,10 +20,10 @@ namespace NodeDataAPI {
         CCNode* getDesByUniqueID(std::string ID, CCNode* node);
         inline CCNode* getNodeByUniqueID(std::string ID) {return getDesByUniqueID(ID, CCScene::get());}
 
-        CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*> data);
+        CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*>* data);
         CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
 
-        UniqueNodeData<CCNode*> getUniqueDataExt(CCNode* node);
+        UniqueNodeData<CCNode*>* getUniqueDataExt(CCNode* node);
         NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
 
 
@@ -59,7 +59,7 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass> data, bool considerChildren = true) {
-        auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>>(data.m_uniqueData));
+        auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>*>(data.m_uniqueData));
     
         if (data.m_layout) {
             if (considerChildren) {
@@ -138,7 +138,7 @@ namespace NodeDataAPI {
 
 
     template <class NodeSubclass>
-    UniqueNodeData<NodeSubclass> getUniqueNodeData(NodeSubclass node) {
+    UniqueNodeData<NodeSubclass>* getUniqueNodeData(NodeSubclass node) {
         char* className;
         #ifdef GEODE_IS_WINDOWS
         className = const_cast<char*>(typeid(*node).name() + 6);
@@ -244,28 +244,28 @@ namespace NodeDataAPI {
     // CCNode 
 
     template <>
-    CCNode* createNodeWithUniqueData<CCNode*>(UniqueNodeData<CCNode*> data);
+    CCNode* createNodeWithUniqueData<CCNode*>(UniqueNodeData<CCNode*>* data);
 
     template <>
-    UniqueNodeData<CCNode*> getUniqueNodeData<CCNode*>(CCNode* node);
+    UniqueNodeData<CCNode*>* getUniqueNodeData<CCNode*>(CCNode* node);
 
 
     // CCSprite
 
     template <>
-    CCSprite* createNodeWithUniqueData<CCSprite*>(UniqueNodeData<CCSprite*> data);
+    CCSprite* createNodeWithUniqueData<CCSprite*>(UniqueNodeData<CCSprite*>* data);
 
     template <>
-    UniqueNodeData<CCSprite*> getUniqueNodeData<CCSprite*>(CCSprite* node);
+    UniqueNodeData<CCSprite*>* getUniqueNodeData<CCSprite*>(CCSprite* node);
 
     
     // CCMenuItemSpriteExtra
 
     template <>
-    CCMenuItemSpriteExtra* createNodeWithUniqueData<CCMenuItemSpriteExtra*>(UniqueNodeData<CCMenuItemSpriteExtra*> data);
+    CCMenuItemSpriteExtra* createNodeWithUniqueData<CCMenuItemSpriteExtra*>(UniqueNodeData<CCMenuItemSpriteExtra*>* data);
 
     template <>
-    UniqueNodeData<CCMenuItemSpriteExtra*> getUniqueNodeData<CCMenuItemSpriteExtra*>(CCMenuItemSpriteExtra* node);
+    UniqueNodeData<CCMenuItemSpriteExtra*>* getUniqueNodeData<CCMenuItemSpriteExtra*>(CCMenuItemSpriteExtra* node);
 
 
     

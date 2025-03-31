@@ -23,11 +23,11 @@ CCNode* NodeDataAPI::utils::getDesByUniqueID(std::string ID, CCNode* node) {
 }
 
 
-CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNode*> data) {
-    if (auto spriteData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(&data)) {
-        return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(*spriteData);
-    } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>*>(&data)) {
-        return NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(*menuItemSpriteExtraData);
+CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNode*>* data) {
+    if (auto spriteData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(data)) {
+        return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(spriteData);
+    } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>*>(data)) {
+        return NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(menuItemSpriteExtraData);
     } else return NodeDataAPI::createNodeWithUniqueData<CCNode*>(data);
 }
 
@@ -40,7 +40,7 @@ CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*> data, b
 }
 
 
-NodeDataAPI::UniqueNodeData<CCNode*> NodeDataAPI::utils::getUniqueDataExt(CCNode* node) {
+NodeDataAPI::UniqueNodeData<CCNode*>* NodeDataAPI::utils::getUniqueDataExt(CCNode* node) {
     if (auto sprite = typeinfo_cast<CCSprite*>(node)) {
         return NodeDataAPI::getUniqueNodeData<CCSprite*>(sprite);
     } else if (auto menuItemSpriteExtra = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
