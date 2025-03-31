@@ -176,7 +176,7 @@ namespace NodeDataAPI {
 
     template <>
     DTOR_STRUCT_DERIVE(UniqueNodeData<CCMenuItemSpriteExtra*>, UniqueNodeData<CCNode*>) 
-        NodeData<CCNode*> m_sprite;
+        NodeData<CCNode*>* m_sprite;
 
         ccColor3B m_color;
         GLubyte m_opacity;

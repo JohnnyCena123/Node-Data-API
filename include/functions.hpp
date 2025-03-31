@@ -20,12 +20,12 @@ namespace NodeDataAPI {
         CCNode* getDesByUniqueID(std::string ID, CCNode* node);
         inline CCNode* getNodeByUniqueID(std::string ID) {return getDesByUniqueID(ID, CCScene::get());}
 
+
         CCNode* createNodeUniqueExt(UniqueNodeData<CCNode*>* data);
-        CCNode* createNodeExt(NodeData<CCNode*> data, bool considerChildren = true);
+        CCNode* createNodeExt(NodeData<CCNode*>* data, bool considerChildren = true);
 
         UniqueNodeData<CCNode*>* getUniqueDataExt(CCNode* node);
-        NodeData<CCNode*> getDataExt(CCNode* node, bool considerChildren = true);
-
+        NodeData<CCNode*>* getDataExt(CCNode* node, bool considerChildren = true);
 
         inline CCNode* cloneNodeExt(CCNode* node, bool considerChildren = true) {
             return createNodeExt(getDataExt(node, considerChildren), considerChildren);
