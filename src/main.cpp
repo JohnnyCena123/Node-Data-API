@@ -60,7 +60,7 @@ int $modify(MyMenuLayer, MenuLayer) {
 
         auto sprUniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
         sprData->m_uniqueData = sprUniqueData;
-        
+
         sprUniqueData->m_spriteName = "GJ_chatBtn_001.png";
         sprUniqueData->m_isSpritesheet = true;
         sprUniqueData->m_color = ccc3(
@@ -76,6 +76,8 @@ int $modify(MyMenuLayer, MenuLayer) {
 
         auto child1UniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
         auto child2UniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
+        child1->m_uniqueData = child1UniqueData;
+        child2->m_uniqueData = child2UniqueData;
 
         child1UniqueData->m_spriteName = "GJ_starBtnMod_001.png";
         child2UniqueData->m_spriteName = "accountBtn_blocked_001.png";
