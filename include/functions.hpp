@@ -59,6 +59,7 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass>* data, bool considerChildren = true) {
+        if (static_cast<UniqueNodeData<NodeSubclass>*>(data->m_uniqueData) == nullptr) log::error("failed to get the unique data.");
         auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>*>(data->m_uniqueData));
     
         if (data->m_layout) {

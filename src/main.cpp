@@ -48,6 +48,29 @@ int $modify(MyMenuLayer, MenuLayer) {
 
 
 
+        auto data = new NodeDataAPI::NodeData<CCMenuItemSpriteExtra*>();
+        auto uniqueData = new NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>;
+        data->m_uniqueData = uniqueData;
+        uniqueData->m_callback = {3.f, {-4.f, 13.f}, 4.5f};
+
+        auto sprData = new NodeDataAPI::NodeData<CCSprite*>();
+        uniqueData->m_sprite = sprData;
+
+        sprData->m_layout = new NodeDataAPI::AnchorLayoutData();
+
+        auto sprUniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
+        sprData->m_uniqueData = sprUniqueData;
+        
+        sprUniqueData->m_spriteName = "GJ_chatBtn_001.png";
+        sprUniqueData->m_isSpritesheet = true;
+        sprUniqueData->m_color = ccc3(
+            -21*Fields::n % 256 + rand() % 29, 
+            -4*Fields::n % 256 + rand() % 29, 
+            -17*Fields::n % 256 + rand() % 29
+        );
+        sprUniqueData->m_opacity = -19*Fields::n % 256;
+
+        
         auto child1 = new NodeDataAPI::NodeData<CCSprite*>();
         auto child2 = new NodeDataAPI::NodeData<CCSprite*>();
 
@@ -95,33 +118,9 @@ int $modify(MyMenuLayer, MenuLayer) {
         child1->m_scale = {.15f, .15f};
         child2->m_scale = {.15f, .15f};
 
-
-        auto sprData = new NodeDataAPI::NodeData<CCSprite*>();
         
         sprData->m_children.push_back(child1);
         sprData->m_children.push_back(child2);
-
-
-        sprData->m_layout = new NodeDataAPI::AnchorLayoutData();
-
-        auto sprUniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
-        sprUniqueData->m_spriteName = "GJ_chatBtn_001.png";
-        sprUniqueData->m_isSpritesheet = true;
-        sprUniqueData->m_color = ccc3(
-            -21*Fields::n % 256 + rand() % 29, 
-            -4*Fields::n % 256 + rand() % 29, 
-            -17*Fields::n % 256 + rand() % 29
-        );
-        sprUniqueData->m_opacity = -19*Fields::n % 256;
-        sprData->m_uniqueData = sprUniqueData;
-
-        auto data = new NodeDataAPI::NodeData<CCMenuItemSpriteExtra*>();
-
-        auto uniqueData = new NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>;
-
-        uniqueData->m_sprite = sprData;
-        
-        uniqueData->m_callback = {3.f, {-4.f, 13.f}, 4.5f};
 
 
 

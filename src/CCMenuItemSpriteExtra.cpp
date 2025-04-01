@@ -7,7 +7,8 @@ using namespace geode::prelude;
 
 template <>
 CCMenuItemSpriteExtra* NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>* data) {
-    auto spr = NodeDataAPI::utils::createNodeExt(data->m_sprite, true);
+    if (data->m_sprite->m_uniqueData == nullptr) log::error("unique sprite data is nullptr.");
+    auto spr = NodeDataAPI::utils::createNodeExt(data->m_sprite, true); 
     auto ret = CCMenuItemSpriteExtra::create(
         spr, NodeDataAPI::callbacks::CallbackHandler::s_callbackHandler, 
         menu_selector(NodeDataAPI::callbacks::CallbackHandler::onCallback)

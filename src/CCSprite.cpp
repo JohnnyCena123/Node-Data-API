@@ -6,6 +6,7 @@ using namespace geode::prelude;
 
 template <>
 CCSprite* NodeDataAPI::createNodeWithUniqueData<CCSprite*>(NodeDataAPI::UniqueNodeData<CCSprite*>* data) {
+    if (data == nullptr) log::error("data is nullptr.");
     CCSprite* ret;
     if (data->m_isSpritesheet) {
         ret = CCSprite::createWithSpriteFrameName(data->m_spriteName.c_str());

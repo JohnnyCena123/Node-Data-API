@@ -32,6 +32,8 @@ CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNo
 }
 
 CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*>* data, bool considerChildren) {
+    if (data->m_uniqueData == nullptr) log::error("data->m_uniqueData is nullptr - NodeDataAPI::utils::createNodeExt");
+
     if (auto spriteData = typeinfo_cast<NodeDataAPI::NodeData<CCSprite*>*>(data)) {
         return NodeDataAPI::createNodeWithData<CCSprite*>(spriteData, considerChildren);
     } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::NodeData<CCMenuItemSpriteExtra*>*>(data)) {
