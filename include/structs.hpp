@@ -4,8 +4,8 @@
 using namespace geode::prelude;
 
 struct FloatPair {
-    float x;
-    float y;
+    float x = 0.f;
+    float y = 0.f;
 };
 
 #define DTOR_STRUCT(structName) struct structName {\
