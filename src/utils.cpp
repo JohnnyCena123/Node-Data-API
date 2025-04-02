@@ -24,21 +24,21 @@ CCNode* NodeDataAPI::utils::getDesByUniqueID(std::string ID, CCNode* node) {
 
 
 CCNode* NodeDataAPI::utils::createNodeUniqueExt(NodeDataAPI::UniqueNodeData<CCNode*>* data) {
-    if (auto spriteData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(data)) {
-        return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(spriteData);
-    } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::UniqueNodeData<CCMenuItemSpriteExtra*>*>(data)) {
-        return NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(menuItemSpriteExtraData);
-    } else return NodeDataAPI::createNodeWithUniqueData<CCNode*>(data);
+    switch (data->m_nodeType) {
+        case NodeType::CCSprite: return NodeDataAPI::createNodeWithUniqueData<CCSprite*>(static_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(data));
+        case NodeType::CCMenuItemSpriteExtra: return NodeDataAPI::createNodeWithUniqueData<CCMenuItemSpriteExtra*>(static_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(data));
+        case NodeType::CCNode: return NodeDataAPI::createNodeWithUniqueData<CCNode*>(static_cast<NodeDataAPI::UniqueNodeData<CCSprite*>*>(data)data);
+        default: return nullptr; 
+    }
 }
 
 CCNode* NodeDataAPI::utils::createNodeExt(NodeDataAPI::NodeData<CCNode*>* data, bool considerChildren) {
-    if (data->m_uniqueData == nullptr) log::error("data->m_uniqueData is nullptr - NodeDataAPI::utils::createNodeExt");
-
-    if (auto spriteData = typeinfo_cast<NodeDataAPI::NodeData<CCSprite*>*>(data)) {
-        return NodeDataAPI::createNodeWithData<CCSprite*>(spriteData, considerChildren);
-    } else if (auto menuItemSpriteExtraData = typeinfo_cast<NodeDataAPI::NodeData<CCMenuItemSpriteExtra*>*>(data)) {
-        return NodeDataAPI::createNodeWithData<CCMenuItemSpriteExtra*>(menuItemSpriteExtraData, considerChildren);
-    } else return NodeDataAPI::createNodeWithData<CCNode*>(data, considerChildren);
+    switch (data->m_uniqueData->m_nodeType) {
+        case NodeType::CCSprite: return NodeDataAPI::createNodeWithData<CCSprite*>(static_cast<NodeDataAPI::NodeData<CCSprite*>*>(data), considerChildren);
+        case NodeType::CCMenuItemSpriteExtra: return NodeDataAPI::createNodeWithData<CCMenuItemSpriteExtra*>(static_cast<NodeDataAPI::NodeData<CCMenuItemSpriteExtra*>*>(data), considerChildren);
+        case NodeType::CCNode: return NodeDataAPI::createNodeWithData<CCNode*>(data, considerChildren);
+        default: return nullptr; 
+    }
 }
 
 
