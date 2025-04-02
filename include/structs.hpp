@@ -1,13 +1,6 @@
 #pragma once
 #include <Geode/Geode.hpp>
 
-using namespace geode::prelude;
-
-struct FloatPair {
-    float x = 0.f;
-    float y = 0.f;
-};
-
 #define DTOR_STRUCT(structName) struct structName {\
     virtual ~structName() {\
         if (Mod::get()->getSettingValue<bool>("logging-destructions-enabled")) log::debug("destructed {}!", #structName);\
@@ -18,10 +11,26 @@ struct FloatPair {
     }     
 #define STRUCT_END };
 
+
+using namespace geode::prelude;
+
+
+struct FloatPair {
+    float x = 0.f;
+    float y = 0.f;
+};
+
 namespace NodeDataAPI {
 
 
     // base
+
+    enum class NodeType {
+        Unknown,
+        CCNode,
+        CCSprite,
+        CCMenuItemSpriteExtra
+    };
 
     DTOR_STRUCT(LayoutData)
         bool m_isIgnoreInvisibleChildren;
@@ -76,7 +85,10 @@ namespace NodeDataAPI {
     
 
     template <class NodeSubclass>
-    DTOR_STRUCT(UniqueNodeData) STRUCT_END
+    DTOR_STRUCT(UniqueNodeData)
+    protected: NodeType m_nodeType;
+    public: UniqueNodeData() : m_nodeType(NodeType::Unknown) {}
+    STRUCT_END
 
     template <class NodeSubclass>
     DTOR_STRUCT(NodeData) 
@@ -110,7 +122,9 @@ namespace NodeDataAPI {
     // CCNode
 
     template <>
-    DTOR_STRUCT(UniqueNodeData<CCNode*>) STRUCT_END 
+    DTOR_STRUCT(UniqueNodeData<CCNode*>)
+        virtual NodeType nodeType() {return NodeType::CCNode;}
+    STRUCT_END 
 
     template <>
     DTOR_STRUCT(NodeData<CCNode*>)
@@ -144,7 +158,9 @@ namespace NodeDataAPI {
     // CCSprite
 
     template <>
-    DTOR_STRUCT_DERIVE(UniqueNodeData<CCSprite*>, UniqueNodeData<CCNode*>) 
+    DTOR_STRUCT_DERIVE(UniqueNodeData<CCSprite*>, UniqueNodeData<CCNode*>)         
+        virtual NodeType nodeType() override {return NodeType::CCSprite;}
+
 
         bool m_isSpritesheet; 
         std::string m_spriteName;
@@ -176,6 +192,8 @@ namespace NodeDataAPI {
 
     template <>
     DTOR_STRUCT_DERIVE(UniqueNodeData<CCMenuItemSpriteExtra*>, UniqueNodeData<CCNode*>) 
+        virtual NodeType nodeType() override {return NodeType::CCMenuItemSpriteExtra;}
+
         NodeData<CCNode*>* m_sprite;
 
         ccColor3B m_color;

@@ -59,12 +59,12 @@ namespace NodeDataAPI {
 
     template <class NodeSubclass>
     NodeSubclass createNodeWithData(NodeData<NodeSubclass>* data, bool considerChildren = true) {
-        if (static_cast<UniqueNodeData<NodeSubclass>*>(data->m_uniqueData) == nullptr) log::error("failed to get the unique data.");
         auto ret = createNodeWithUniqueData<NodeSubclass>(static_cast<UniqueNodeData<NodeSubclass>*>(data->m_uniqueData));
     
         if (data->m_layout) {
             if (considerChildren) {
                 for (auto childData : data->m_children) {
+                    log::debug("adding a child!");
                     ret->addChild(utils::createNodeExt(childData));
                 }
             }
@@ -84,6 +84,7 @@ namespace NodeDataAPI {
                     ->setDefaultScaleLimits(axisLayoutData->m_defaultScaleLimits.x, axisLayoutData->m_defaultScaleLimits.y)
                 );
             } else if (auto anchorLayoutData = typeinfo_cast<AnchorLayoutData*>(data->m_layout)) {
+                log::debug("setting anchor layout!");
                 ret->setLayout(AnchorLayout::create());
             }
 
@@ -108,19 +109,20 @@ namespace NodeDataAPI {
                     ->setCrossAxisAlignment(axisLayoutOptionsData->m_crossAxisAlignment)
                 );
             } else if (auto anchorLayoutOptionsData = typeinfo_cast<AnchorLayoutOptionsData*>(data->m_layoutOptions)) {
-                    ret->setLayoutOptions(AnchorLayoutOptions::create()
+                log::debug("setting anchor layout options!");    
+                ret->setLayoutOptions(AnchorLayoutOptions::create()
                     ->setAnchor(anchorLayoutOptionsData->m_anchor)
                     ->setOffset({anchorLayoutOptionsData->m_offset.x, anchorLayoutOptionsData->m_offset.y})
                 );
             }
         }
 
-        ret->setPosition({data->m_position.x, data->m_position.y});
-        ret->setAnchorPoint({data->m_anchorPoint.x, data->m_anchorPoint.y});
-        ret->setScaleX(data->m_scale.x); ret->setScaleY(data->m_scale.y);
-        ret->setContentSize({data->m_contentSize.x, data->m_contentSize.y});
-        ret->setRotationX(data->m_rotation.x); ret->setRotationY(data->m_rotation.y);
-        ret->setSkewX(data->m_skew.x); ret->setSkewY(data->m_skew.y);
+        ret->setPosition({data->m_position.x, data->m_position.y}); log::debug("position: {}, {}", data->m_position.x, data->m_position.y);
+        ret->setAnchorPoint({data->m_anchorPoint.x, data->m_anchorPoint.y}); log::debug("anchor point: {}, {}", data->m_anchorPoint.x, data->m_anchorPoint.y);
+        ret->setScaleX(data->m_scale.x); ret->setScaleY(data->m_scale.y); log::debug("scale: {}, {}", data->m_scale.x, data->m_scale.y);
+        ret->setContentSize({data->m_contentSize.x, data->m_contentSize.y}); log::debug("content size: {}, {}", data->m_contentSize.x, data->m_contentSize.y);
+        ret->setRotationX(data->m_rotation.x); ret->setRotationY(data->m_rotation.y); log::debug("rotation: {}, {}", data->m_rotation.x, data->m_rotation.y);
+        ret->setSkewX(data->m_skew.x); ret->setSkewY(data->m_skew.y); log::debug("skew: {}, {}", data->m_skew.x, data->m_skew.y);
 
         ret->setZOrder(data->m_zOrder);
         ret->setTag(data->m_tag);

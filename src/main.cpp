@@ -38,7 +38,7 @@ int $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
 
-        CCScheduler::get()->scheduleSelector(schedule_selector(MyMenuLayer::cloneTitle), this, .025f, 200, .5f, false);
+        // CCScheduler::get()->scheduleSelector(schedule_selector(MyMenuLayer::cloneTitle), this, .1f, 100, .5f, false);
             
 
         auto menu = this->getChildByID("bottom-menu");
@@ -56,19 +56,17 @@ int $modify(MyMenuLayer, MenuLayer) {
         auto sprData = new NodeDataAPI::NodeData<CCSprite*>();
         uniqueData->m_sprite = sprData;
 
-        sprData->m_layout = new NodeDataAPI::AnchorLayoutData();
-
         auto sprUniqueData = new NodeDataAPI::UniqueNodeData<cocos2d::CCSprite*>();
         sprData->m_uniqueData = sprUniqueData;
 
         sprUniqueData->m_spriteName = "GJ_chatBtn_001.png";
         sprUniqueData->m_isSpritesheet = true;
-        sprUniqueData->m_color = ccc3(
-            -21*Fields::n % 256 + rand() % 29, 
-            -4*Fields::n % 256 + rand() % 29, 
-            -17*Fields::n % 256 + rand() % 29
-        );
-        sprUniqueData->m_opacity = -19*Fields::n % 256;
+        sprUniqueData->m_color = ccc3(50, 200, 250);
+        sprUniqueData->m_opacity = (-19*Fields::n % 256) % 256;
+
+        // sprData->m_layout = new NodeDataAPI::AnchorLayoutData();
+
+        sprData->m_scale = {1.25f, 1.f};
 
         
         auto child1 = new NodeDataAPI::NodeData<CCSprite*>();
@@ -85,21 +83,15 @@ int $modify(MyMenuLayer, MenuLayer) {
         child1UniqueData->m_isSpritesheet = true;
         child2UniqueData->m_isSpritesheet = true;
 
-        child1UniqueData->m_color = ccc3(
-            -11*m_fields->n % 256 + rand() % 29, 
-            -13*m_fields->n % 256 + rand() % 29, 
-            -15*m_fields->n % 256 + rand() % 29
-        );
+        child1UniqueData->m_color = ccc3(200, 100, 250);
 
-        child2UniqueData->m_color = ccc3(
-            -15*m_fields->n % 256 + rand() % 43, 
-            -13*m_fields->n % 256 + rand() % 43, 
-            -11*m_fields->n % 256 + rand() % 43
-        );
+        child2UniqueData->m_color = ccc3(169, 254, 80);
 
 
         auto child1LayoutOptions = new NodeDataAPI::AnchorLayoutOptionsData();
         auto child2LayoutOptions = new NodeDataAPI::AnchorLayoutOptionsData();
+        child1->m_layoutOptions = child1LayoutOptions;
+        child2->m_layoutOptions = child2LayoutOptions;
 
         child1LayoutOptions->m_anchor = Anchor::Center;
         child2LayoutOptions->m_anchor = Anchor::Center;
@@ -117,8 +109,8 @@ int $modify(MyMenuLayer, MenuLayer) {
         child1->m_skew = {6.f, -9.f};
         child2->m_rotation = {-9.f, 6.f};      
 
-        child1->m_scale = {.15f, .15f};
-        child2->m_scale = {.15f, .15f};
+        child1->m_scale = {.25f, .25f};
+        child2->m_scale = {.25f, .25f};
 
         
         sprData->m_children.push_back(child1);
@@ -147,7 +139,7 @@ int $modify(MyMenuLayer, MenuLayer) {
     }
 
     void cloneTitle(float param) {
-        auto spr = NodeDataAPI::cloneNode<CCSprite*>(static_cast<CCSprite*>(this->getChildByID("main-title")), true);
+        auto spr = NodeDataAPI::utils::cloneNodeExt(this->getChildByID("main-title"), true);
         this->addChild(spr);
         spr->runAction(CCEaseBounceOut::create(CCMoveBy::create(5.f, ccp(0, -150))));
         spr->runAction(CCMoveBy::create(5.f, ccp(-300, 0)));
