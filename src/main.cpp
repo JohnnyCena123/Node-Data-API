@@ -13,7 +13,7 @@ void updateSavedLogLevels() {
     }
 
     (void)Mod::get()->setSavedValue<bool>(
-        "is-logging-level-debug", 
+        "is-logging-level-debug",
         geodeLoader->getSettingValue<std::string>("console-logging-level") == "debug" 
         || geodeLoader->getSettingValue<std::string>("file-logging-level") == "debug"
     );
@@ -39,7 +39,7 @@ int $modify(MyMenuLayer, MenuLayer) {
         if (!MenuLayer::init()) return false;
 
         // CCScheduler::get()->scheduleSelector(schedule_selector(MyMenuLayer::cloneTitle), this, .1f, 100, .5f, false);
-            
+
 
         auto menu = this->getChildByID("bottom-menu");
         auto buttonSprite = CCSprite::createWithSpriteFrameName("GJ_gpgBtn_001.png");
@@ -62,13 +62,13 @@ int $modify(MyMenuLayer, MenuLayer) {
         sprUniqueData->m_spriteName = "GJ_chatBtn_001.png";
         sprUniqueData->m_isSpritesheet = true;
         sprUniqueData->m_color = ccc3(50, 200, 250);
-        sprUniqueData->m_opacity = (-19*Fields::n % 256) % 256;
+        sprUniqueData->m_opacity = /*(-19*Fields::n % 256) % 256*/255;
 
         // sprData->m_layout = new NodeDataAPI::AnchorLayoutData();
 
         sprData->m_scale = {1.25f, 1.f};
 
-        
+
         auto child1 = new NodeDataAPI::NodeData<CCSprite*>();
         auto child2 = new NodeDataAPI::NodeData<CCSprite*>();
 
